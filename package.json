@@ -1,0 +1,13 @@
+{
+    "name": "translasapp",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+        "start:backend": "cd backend && dotnet run --project TranslasApp.Backend.csproj",
+        "start:frontend": "cd frontend && npm run serve"
+    },
+    "devDependencies": {
+        "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+        "concurrently": "^7.6.0"
+    }
+}

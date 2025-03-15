@@ -1,0 +1,101 @@
+{
+    "navigation": {
+      "home": "Home",
+      "createCard": "Create Card"
+    },
+    "home": {
+      "welcome": "Welcome to TranslasApp",
+      "intro": "This is the home page.",
+      "createCard": "Create a new card"
+    },
+    "cards": {
+      "title": "Card List",
+      "filters": {
+        "priority": "Filter by Priority:",
+        "show": "Show:",
+        "allPriorities": "All Priorities",
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High",
+        "allCards": "All Cards",
+        "handledOnly": "Handled Only",
+        "unhandledOnly": "Unhandled Only"
+      },
+      "status": {
+        "handled": "Handled",
+        "pending": "Pending"
+      },
+      "labels": {
+        "receiver": "Receiver:",
+        "supplier": "Supplier:",
+        "carrier": "Carrier:",
+        "collies": "Collies",
+        "pallets": "Pallets",
+        "bundels": "Bundels",
+        "unknown": "Unknown",
+        "numberOfCollies": "Number of Collies:",
+        "numberOfPallets": "Number of Pallets:",
+        "numberOfBundels": "Number of Bundels:",
+        "priority": "Priority:"
+      },
+      "actions": {
+        "refresh": "Refresh",
+        "markHandled": "Mark Handled",
+        "markUnhandled": "Mark Unhandled",
+        "viewDetails": "View Details",
+        "createNew": "Create New Card",
+        "tryAgain": "Try Again",
+        "create": "Create Card"
+      },
+      "messages": {
+        "loading": "Loading cards...",
+        "noCards": "No cards found. Create a new card to get started.",
+        "failedLoad": "Failed to load cards: ",
+        "failedUpdate": "Failed to update status: "
+      }
+    },
+    "forms": {
+  "create": {
+    "title": "Create New Card",
+    "entitySelection": "Select Entities",
+    "cardDetails": "Card Details",
+    "addReceiver": "Add New Receiver",
+    "addSupplier": "Add New Supplier", 
+    "addCarrier": "Add New Carrier",
+    "selectReceiver": "Select a receiver...",
+    "selectSupplier": "Select a supplier...",
+    "selectCarrier": "Select a carrier..."
+  },
+      "carrier": {
+        "title": "Add New Carrier",
+        "name": "Carrier Name",
+        "add": "Add Carrier",
+        "adding": "Adding...",
+        "success": "Carrier added successfully!",
+        "error": "Error adding carrier: "
+      },
+      "supplier": {
+        "title": "Add New Supplier",
+        "name": "Supplier Name",
+        "add": "Add Supplier",
+        "adding": "Adding...",
+        "success": "Supplier added successfully!",
+        "error": "Error adding supplier: "
+      },
+      "receiver": {
+        "title": "Add New Receiver",
+        "name": "Receiver Name",
+        "add": "Add Receiver",
+        "adding": "Adding...",
+        "success": "Receiver added successfully!",
+        "error": "Error adding receiver: "
+      }
+    },
+    "common": {
+      "loading": "Loading...",
+      "error": "Error: ",
+      "submit": "Submit",
+      "cancel": "Cancel"
+    }
+  }
+
