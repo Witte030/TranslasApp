@@ -1,0 +1,49 @@
+@use 'sass:color';
+@use '../abstracts' as *;
+
+// Block: button
+.button {
+  padding: $spacing-md;
+  border: none;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  font-weight: $font-weight-medium;
+  transition: background-color 0.2s;
+  
+  // Modifier: button--primary
+  &--primary {
+    @include button($color-primary, white, $color-primary-dark);
+  }
+  
+  // Modifier: button--success
+  &--success {
+    @include button($color-success, white, $color-success-dark);
+  }
+  
+  // Modifier: button--info
+  &--info {
+    @include button($color-info, white, $color-info-dark);
+  }
+  
+  // Modifier: button--warning
+  &--warning {
+    // Replace darken() with color.adjust()
+    @include button($color-warning, $color-gray-dark, color.adjust($color-warning, $lightness: -5%));
+  }
+}
+
+// Block: refresh-btn
+.refresh-btn {
+  padding: $spacing-sm $spacing-lg;
+  @include button($color-success, white, $color-success-dark);
+  @include flex(row, center, center, $spacing-xs);
+}
+
+// Block: create-btn
+.create-btn {
+  display: inline-block;
+  margin-top: $spacing-lg;
+  padding: $spacing-md $spacing-xl;
+  @include button($color-primary, white, $color-primary-dark);
+  text-decoration: none;
+}

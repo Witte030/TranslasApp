@@ -1,0 +1,29 @@
+@use '../abstracts' as *;
+
+// Block: message
+.message {
+  text-align: center;
+  padding: $spacing-xxl;
+  background-color: $color-gray-light;
+  border-radius: $border-radius-md;
+  margin-top: $spacing-xl;
+  
+  // Modifier: message--error
+  &--error {
+    color: $color-danger;
+  }
+  
+  // Modifier: message--success
+  &--success {
+    color: $color-success;
+  }
+}
+
+// Aliases for backward compatibility
+.loading, .error, .no-cards {
+  @extend .message;
+}
+
+.error {
+  @extend .message--error;
+}

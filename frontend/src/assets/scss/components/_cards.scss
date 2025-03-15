@@ -1,0 +1,201 @@
+@use '../abstracts' as *;
+
+// Block: card
+.card {
+  background-color: white;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-md;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-left: 4px solid $color-gray;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+  
+  // Modifier: card--high-priority
+  &--high-priority {
+    border-left-color: $color-danger;
+  }
+  
+  // Modifier: card--medium-priority
+  &--medium-priority {
+    border-left-color: $color-warning;
+  }
+  
+  // Modifier: card--handled
+  &--handled {
+    background-color: $color-gray-light;
+    opacity: 0.85;
+  }
+  
+  // Element: card__header
+  &__header {
+    @include flex-between;
+    padding: $spacing-md $spacing-lg;
+    background-color: $color-gray-light;
+    border-bottom: 1px solid $color-border;
+  }
+  
+  // Element: card__header-info
+  &__header-info {
+    @include flex(row, flex-start, center, $spacing-md);
+  }
+  
+  // Element: card__date
+  &__date {
+    font-size: $font-size-md;
+    color: $color-gray;
+  }
+  
+  // Element: card__status
+  &__status {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-lg;
+    
+    // Modifier: card__status--pending
+    &--pending {
+      @include badge($color-warning, $color-gray-dark);
+    }
+    
+    // Modifier: card__status--handled
+    &--handled {
+      @include badge($color-success, white);
+    }
+  }
+  
+  // Element: card__priority-badge
+  &__priority-badge {
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-lg;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    
+    // Modifier: card__priority-badge--high
+    &--high {
+      @include badge($color-danger, white);
+    }
+    
+    // Modifier: card__priority-badge--medium
+    &--medium {
+      @include badge($color-warning, $color-gray-dark);
+    }
+    
+    // Modifier: card__priority-badge--low
+    &--low {
+      @include badge($color-gray, white);
+    }
+  }
+  
+  // Element: card__body
+  &__body {
+    padding: $spacing-lg;
+    @include flex(row, space-between, stretch);
+    
+    @media (max-width: $breakpoint-md) {
+      flex-direction: column;
+    }
+  }
+  
+  // Element: card__main-info
+  &__main-info {
+    flex: 3;
+  }
+  
+  // Element: card__info
+  &__info {
+    margin-bottom: $spacing-sm;
+    @include flex(row, flex-start, flex-start);
+  }
+  
+  // Element: card__label
+  &__label {
+    font-weight: $font-weight-medium;
+    min-width: 80px;
+    color: $color-gray;
+  }
+  
+  // Element: card__value
+  &__value {
+    color: $color-gray-dark;
+    font-weight: $font-weight-bold;
+  }
+  
+  // Element: card__counts
+  &__counts {
+    flex: 1;
+    @include flex(column, flex-start, stretch, $spacing-md);
+    padding-left: $spacing-lg;
+    border-left: 1px dashed $color-border;
+    
+    @media (max-width: $breakpoint-md) {
+      flex-direction: row;
+      justify-content: space-around;
+      padding-left: 0;
+      padding-top: $spacing-lg;
+      margin-top: $spacing-lg;
+      border-left: 0;
+      border-top: 1px dashed $color-border;
+    }
+  }
+  
+  // Element: card__count-item
+  &__count-item {
+    @include flex(row, flex-start, center, $spacing-md);
+  }
+  
+  // Element: card__count
+  &__count {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-gray-dark;
+  }
+  
+  // Element: card__count-label
+  &__count-label {
+    font-size: $font-size-md;
+    color: $color-gray;
+  }
+  
+  // Element: card__footer
+  &__footer {
+    @include flex(row, space-between, center, $spacing-md);
+    padding: $spacing-md $spacing-lg;
+    background-color: $color-gray-light;
+    border-top: 1px solid $color-border;
+  }
+  
+  // Element: card__button
+  &__button {
+    flex: 1;
+    padding: $spacing-sm;
+    border: none;
+    border-radius: $border-radius-sm;
+    cursor: pointer;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-md;
+    
+    // Modifier: card__button--mark-handled
+    &--mark-handled {
+      @include button($color-success, white, $color-success-dark);
+    }
+    
+    // Modifier: card__button--handled
+    &--handled {
+      @include button($color-info, white, $color-info-dark);
+    }
+    
+    // Modifier: card__button--view
+    &--view {
+      @include button($color-primary, white, $color-primary-dark);
+    }
+  }
+}
+
+// Block: cards-list
+.cards-list {
+  @include flex(column, flex-start, stretch, $spacing-lg);
+}

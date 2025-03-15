@@ -1,0 +1,16 @@
+@use 'sass:color';
+
+// Lighten a color by a percentage
+@function lighten-color($color, $percentage) {
+  @return color.adjust($color, $lightness: $percentage);
+}
+
+// Darken a color by a percentage
+@function darken-color($color, $percentage) {
+  @return color.adjust($color, $lightness: -$percentage);
+}
+
+// Adjust opacity of a color
+@function set-alpha($color, $alpha) {
+  @return color.adjust($color, $alpha: $alpha - color.alpha($color));
+}

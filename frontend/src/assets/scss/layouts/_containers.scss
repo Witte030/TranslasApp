@@ -1,0 +1,19 @@
+@use '../abstracts' as *;
+
+// Block: container
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: $spacing-xl;
+  
+  &__title {
+    color: $color-gray-dark;
+    margin-bottom: $spacing-xl;
+    text-align: center;
+  }
+}
+
+// Compatibility with existing class
+.card-list-container {
+  @extend .container;
+}

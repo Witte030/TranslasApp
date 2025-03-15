@@ -1,0 +1,45 @@
+@use 'sass:color';
+@use '../abstracts' as *;
+
+// Block: filters
+.filters {
+  @include flex-between;
+  margin-bottom: $spacing-xl;
+  padding: $spacing-lg;
+  background-color: $color-gray-light;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-sm;
+  
+  @media (max-width: $breakpoint-md) {
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+  
+  // Element: filters__group
+  &__group {
+    @include flex(row, flex-start, center, $spacing-md);
+    
+    @media (max-width: $breakpoint-md) {
+      width: 100%;
+    }
+  }
+  
+  // Element: filters__label
+  &__label {
+    font-weight: $font-weight-medium;
+    color: $color-gray;
+  }
+  
+  // Element: filters__select
+  &__select {
+    padding: $spacing-sm $spacing-md;
+    // Replace darken() with color.adjust()
+    border: 1px solid color.adjust($color-gray-light, $lightness: -10%);
+    border-radius: $border-radius-sm;
+    font-size: $font-size-md;
+    
+    @media (max-width: $breakpoint-md) {
+      flex-grow: 1;
+    }
+  }
+}
