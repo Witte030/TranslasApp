@@ -16,11 +16,7 @@
                 {{ receiver.text }}
               </option>
             </select>
-            <button type="button" class="create-card__add-button" @click="openReceiverModal">+</button>
-          </div>
-          <!-- Inline receiver modal -->
-          <div v-if="isReceiverModalOpen" class="create-card__inline-modal">
-            <ReceiverModal @close="closeReceiverModal" @receiver-added="loadReceivers" />
+            <button type="button" class="create-card__add-button" @click="openModal('receiver')">+</button>
           </div>
         </div>
 
@@ -33,11 +29,7 @@
                 {{ supplier.text }}
               </option>
             </select>
-            <button type="button" class="create-card__add-button" @click="openSupplierModal">+</button>
-          </div>
-          <!-- Inline supplier modal -->
-          <div v-if="isSupplierModalOpen" class="create-card__inline-modal">
-            <SupplierModal @close="closeSupplierModal" @supplier-added="loadSuppliers" />
+            <button type="button" class="create-card__add-button" @click="openModal('supplier')">+</button>
           </div>
         </div>
 
@@ -50,11 +42,7 @@
                 {{ carrier.text }}
               </option>
             </select>
-            <button type="button" class="create-card__add-button" @click="openCarrierModal">+</button>
-          </div>
-          <!-- Inline carrier modal -->
-          <div v-if="isCarrierModalOpen" class="create-card__inline-modal">
-            <CarrierModal @close="closeCarrierModal" @carrier-added="loadCarriers" />
+            <button type="button" class="create-card__add-button" @click="openModal('carrier')">+</button>
           </div>
         </div>
       </div>
@@ -104,10 +92,22 @@
          }">
       {{ message }}
     </div>
+    
+    <!-- Generic Modal Component -->
+    <ModalDialog :isVisible="isModalOpen" @close="closeModal" :showCloseButton="true">
+      <component 
+        :is="activeModalComponent" 
+        @close="closeModal" 
+        @receiver-added="loadReceivers"
+        @supplier-added="loadSuppliers"
+        @carrier-added="loadCarriers" 
+      />
+    </ModalDialog>
   </div>
 </template>
 
 <script>
+import ModalDialog from './Modal.vue';
 import ReceiverModal from './ReceiverModal.vue';
 import SupplierModal from './SupplierModal.vue';
 import CarrierModal from './CarrierModal.vue';
@@ -115,6 +115,7 @@ import CarrierModal from './CarrierModal.vue';
 export default {
   name: 'CreateCard',
   components: {
+    ModalDialog,
     ReceiverModal,
     SupplierModal,
     CarrierModal
@@ -133,9 +134,8 @@ export default {
       receivers: [],
       suppliers: [],
       carriers: [],
-      isReceiverModalOpen: false,
-      isSupplierModalOpen: false,
-      isCarrierModalOpen: false,
+      isModalOpen: false,
+      activeModalComponent: null,
       message: '',
       isSuccess: false,
       loading: false
@@ -198,28 +198,21 @@ export default {
       }
     },
     
-    openReceiverModal() {
-      this.isReceiverModalOpen = true;
+    // Generic modal handler
+    openModal(entityType) {
+      // Map entity type to component name
+      const componentMap = {
+        receiver: 'ReceiverModal',
+        supplier: 'SupplierModal',
+        carrier: 'CarrierModal'
+      };
+      
+      this.activeModalComponent = componentMap[entityType];
+      this.isModalOpen = true;
     },
     
-    closeReceiverModal() {
-      this.isReceiverModalOpen = false;
-    },
-    
-    openSupplierModal() {
-      this.isSupplierModalOpen = true;
-    },
-    
-    closeSupplierModal() {
-      this.isSupplierModalOpen = false;
-    },
-    
-    openCarrierModal() {
-      this.isCarrierModalOpen = true;
-    },
-    
-    closeCarrierModal() {
-      this.isCarrierModalOpen = false;
+    closeModal() {
+      this.isModalOpen = false;
     },
     
     async createCard() {
