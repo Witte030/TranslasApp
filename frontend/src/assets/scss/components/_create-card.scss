@@ -1,0 +1,194 @@
+@use 'sass:color';
+@use '../abstracts' as *;
+
+// Block: create-card
+.create-card {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+  
+  // Element: create-card__title
+  &__title {
+    text-align: center;
+    color: var(--color-gray-dark);
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  // Element: create-card__section-title
+  &__section-title {
+    color: var(--color-gray);
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 8px;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  // Element: create-card__form
+  &__form {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 25px;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  // Element: create-card__section
+  &__section {
+    margin-bottom: 25px;
+  }
+  
+  // Element: create-card__row
+  &__row {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+  
+  // Element: create-card__form-group
+  &__form-group {
+    flex: 1;
+    margin-bottom: var(--spacing-md);
+    position: relative;
+  }
+  
+  // Element: create-card__label
+  &__label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-gray-dark);
+    font-size: 15px;
+  }
+  
+  // Element: create-card__input
+  &__input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    background-color: #f9f9f9;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    
+    &:focus {
+      border-color: var(--color-primary);
+      background-color: white;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+    }
+    
+    &:hover {
+      border-color: var(--color-gray);
+    }
+  }
+  
+  // Element: create-card__select
+  &__select {
+    @extend .create-card__input;
+  }
+  
+  // Element: create-card__select-container
+  &__select-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  // Element: create-card__add-button
+  &__add-button {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--color-success);
+    color: white;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    
+    &:hover {
+      background-color: var(--color-success-dark);
+      transform: scale(1.1);
+    }
+  }
+  
+  // Element: create-card__inline-modal
+  &__inline-modal {
+    margin-top: 10px;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    background-color: #f9f9f9;
+    border: 1px solid var(--color-border);
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-sm);
+  }
+  
+  // Element: create-card__submit
+  &__submit {
+    align-self: center;
+    padding: 14px 30px;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    background-color: var(--color-success);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+    width: auto;
+    min-width: 200px;
+    
+    &:hover {
+      background-color: var(--color-success-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+    
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+  }
+  
+  // Element: create-card__message
+  &__message {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    
+    // Modifier: create-card__message--success
+    &--success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    // Modifier: create-card__message--error
+    &--error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  }
+}

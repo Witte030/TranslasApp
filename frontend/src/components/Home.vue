@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <h1>{{ $t('home.welcome') }}</h1>
-    <p>{{ $t('home.intro') }}</p>
-    <button @click="navigateToCreateCard">{{ $t('home.createCard') }}</button>
+  <div class="home">
+    <h1 class="home__title">{{ $t('home.welcome') }}</h1>
+    <p class="home__intro">{{ $t('home.intro') }}</p>
+    <button @click="navigateToCreateCard" class="home__button">{{ $t('home.createCard') }}</button>
   </div>
 </template>
   
@@ -17,12 +17,6 @@ export default {
 };
 </script>
   
-<style scoped>
-h1 {
-  font-size: 2em;
-  margin-bottom: 0.5em;
-}
-p {
-  margin-bottom: 1em;
-}
+<style lang="scss">
+@use '@/assets/scss/main';
 </style>

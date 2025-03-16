@@ -1,0 +1,73 @@
+@use 'sass:color';
+@use '../abstracts' as *;
+
+// Block: language-switcher
+.language-switcher {
+  display: flex;
+  gap: var(--spacing-md);
+  
+  // Element: language-switcher__button
+  &__button {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    transition: all 0.2s ease;
+    
+    // Flag emoji styling
+    &::before {
+      display: inline-block;
+      margin-right: 2px;
+      font-size: 1.2em;
+    }
+    
+    &:hover {
+      background-color: var(--color-gray-light);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+    
+    // Modifier: language-switcher__button--active
+    &--active {
+      background-color: var(--color-primary);
+      color: white;
+      border-color: var(--color-primary);
+      
+      &:hover {
+        background-color: var(--color-primary-dark);
+      }
+    }
+    
+    // Modifier: language-switcher__button--en
+    &--en::before {
+      content: '🇬🇧';
+    }
+    
+    // Modifier: language-switcher__button--nl
+    &--nl::before {
+      content: '🇳🇱';
+    }
+  }
+  
+  // Responsive styling
+  @media (max-width: 767px) {
+    &__button {
+      padding: var(--spacing-xs);
+      
+      // Show only flag on small screens
+      span {
+        display: none;
+      }
+    }
+  }
+}

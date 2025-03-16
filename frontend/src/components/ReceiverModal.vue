@@ -1,22 +1,31 @@
 <template>
-  <div>
-    <h3>{{ $t('forms.receiver.title') }}</h3>
-    <form @submit.prevent="addReceiver" class="add-receiver-form">
-      <div>
-        <label for="receiverName">{{ $t('forms.receiver.name') }}</label>
-        <input type="text" id="receiverName" v-model="newReceiver.name" required />
+  <div class="entity-modal">
+    <h3 class="entity-modal__title">{{ $t('forms.receiver.title') }}</h3>
+    <form @submit.prevent="addReceiver" class="entity-modal__form">
+      <div class="entity-modal__form-group">
+        <label class="entity-modal__label" for="receiverName">{{ $t('forms.receiver.name') }}</label>
+        <input class="entity-modal__input" type="text" id="receiverName" v-model="newReceiver.name" required />
       </div>
       <!-- Add more fields as needed -->
-      <div class="form-buttons">
-        <button type="submit" class="submit-btn" :disabled="loading">
+      <div class="entity-modal__buttons">
+        <button type="submit" 
+                class="entity-modal__button entity-modal__button--submit" 
+                :disabled="loading">
           {{ loading ? $t('forms.receiver.adding') : $t('forms.receiver.add') }}
         </button>
-        <button type="button" class="cancel-btn" @click="cancel">
+        <button type="button" 
+                class="entity-modal__button entity-modal__button--cancel" 
+                @click="cancel">
           {{ $t('common.cancel') }}
         </button>
       </div>
     </form>
-    <div v-if="message" :class="{ 'success': success, 'error': !success }">
+    <div v-if="message" 
+         class="entity-modal__message"
+         :class="{ 
+           'entity-modal__message--success': success, 
+           'entity-modal__message--error': !success 
+         }">
       {{ message }}
     </div>
   </div>
@@ -85,90 +94,6 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Styles for the modal */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  width: 400px;
-}
-
-.add-receiver-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.add-receiver-form div {
-  margin-bottom: 10px;
-}
-
-.add-receiver-form label {
-  margin-bottom: 5px;
-}
-
-.add-receiver-form input {
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.form-buttons {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.form-buttons button {
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  border-radius: 4px;
-  flex: 1;
-}
-
-.submit-btn {
-  background-color: #42b983;
-  color: white;
-}
-
-.submit-btn:hover {
-  background-color: #3aa876;
-}
-
-.cancel-btn {
-  background-color: #f3f3f3;
-  color: #333;
-  border: 1px solid #ddd;
-}
-
-.cancel-btn:hover {
-  background-color: #e7e7e7;
-}
-
-.success {
-  color: green;
-  margin-top: 10px;
-}
-
-.error {
-  color: red;
-  margin-top: 10px;
-}
+<style lang="scss">
+@use '@/assets/scss/main';
 </style>
