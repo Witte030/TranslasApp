@@ -1,0 +1,103 @@
+@use 'sass:color';
+@use '../abstracts' as *;
+
+// Block: modal
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: auto;
+  padding: $spacing-md;
+  box-sizing: border-box; // Ensure padding doesn't cause overflow
+  
+  // Element: modal-content
+  &-content {
+    position: relative;
+    background-color: white;
+    padding: $spacing-lg $spacing-lg $spacing-xl; // More padding at bottom
+    border-radius: $border-radius-lg; // Increased border radius
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 550px; // Match entity-modal max-width
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden; // Prevent horizontal scrollbar
+    box-sizing: border-box; // Ensure padding doesn't cause overflow
+    display: flex;
+    flex-direction: column;
+    align-items: center; // Center content horizontally
+    
+    @media (max-width: $breakpoint-sm) {
+      max-height: 100vh;
+      border-radius: 0; // On small screens, remove border radius
+      margin: 0;
+    }
+  }
+  
+  // Element: modal__close-button
+  &__close-button {
+    position: absolute;
+    top: $spacing-sm;
+    right: $spacing-md;
+    font-size: 24px;
+    font-weight: $font-weight-bold;
+    cursor: pointer;
+    color: $color-gray;
+    line-height: 1;
+    background: none;
+    border: none;
+    padding: 0;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: $color-gray-dark;
+    }
+  }
+  
+  // Element: modal__title
+  &__title {
+    font-size: $font-size-lg;
+    margin-top: 0;
+    margin-bottom: $spacing-md;
+    color: $color-gray-dark;
+    font-weight: $font-weight-bold;
+    text-align: center; // Center title
+    width: 100%;
+  }
+  
+  // Element: modal__body
+  &__body {
+    margin-bottom: $spacing-md;
+    width: 100%; // Ensure full width
+    display: flex;
+    flex-direction: column;
+    align-items: center; // Center content
+  }
+  
+  // Element: modal__footer
+  &__footer {
+    display: flex;
+    justify-content: center; // Center buttons
+    gap: $spacing-sm;
+    margin-top: $spacing-lg;
+    width: 100%;
+  }
+}
+
+// Animation classes
+.modal-fade-enter-active, 
+.modal-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.modal-fade-enter-from, 
+.modal-fade-leave-to {
+  opacity: 0;
+}

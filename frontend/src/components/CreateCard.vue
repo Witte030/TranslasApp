@@ -11,15 +11,19 @@
         <div class="create-card__form-group">
           <label class="create-card__label" for="receiver">{{ $t('cards.labels.receiver') }}</label>
           <div class="create-card__select-container">
-            <FuzzySearch
-              id="receiver"
-              v-model="card.receiverId"
-              :items="receivers"
-              :placeholder="$t('forms.create.searchReceiver')"
-              :default-option="$t('forms.create.selectReceiver')"
-              @item-selected="onReceiverSelected"
-              class="create-card__search-container"
-            />
+            <div class="create-card__search-container">
+              <FuzzySearch
+                id="receiver"
+                v-model="card.receiverId"
+                :items="receivers"
+                :placeholder="$t('forms.create.searchReceiver')"
+                :default-option="$t('forms.create.selectReceiver')"
+                :required="true"
+                :error-message="$t('forms.create.errors.receiverRequired')"
+                :show-validation-errors="showValidationErrors"
+                @item-selected="onReceiverSelected"
+              />
+            </div>
             <button type="button" class="create-card__add-button" @click="openModal('receiver')">+</button>
           </div>
         </div>
@@ -28,15 +32,19 @@
         <div class="create-card__form-group">
           <label class="create-card__label" for="supplier">{{ $t('cards.labels.supplier') }}</label>
           <div class="create-card__select-container">
-            <FuzzySearch
-              id="supplier"
-              v-model="card.supplierId"
-              :items="suppliers"
-              :placeholder="$t('forms.create.searchSupplier')"
-              :default-option="$t('forms.create.selectSupplier')"
-              @item-selected="onSupplierSelected"
-              class="create-card__search-container"
-            />
+            <div class="create-card__search-container">
+              <FuzzySearch
+                id="supplier"
+                v-model="card.supplierId"
+                :items="suppliers"
+                :placeholder="$t('forms.create.searchSupplier')"
+                :default-option="$t('forms.create.selectSupplier')"
+                :required="true"
+                :error-message="$t('forms.create.errors.supplierRequired')"
+                :show-validation-errors="showValidationErrors"
+                @item-selected="onSupplierSelected"
+              />
+            </div>
             <button type="button" class="create-card__add-button" @click="openModal('supplier')">+</button>
           </div>
         </div>
@@ -45,15 +53,19 @@
         <div class="create-card__form-group">
           <label class="create-card__label" for="carrier">{{ $t('cards.labels.carrier') }}</label>
           <div class="create-card__select-container">
-            <FuzzySearch
-              id="carrier"
-              v-model="card.carrierId"
-              :items="carriers"
-              :placeholder="$t('forms.create.searchCarrier')"
-              :default-option="$t('forms.create.selectCarrier')"
-              @item-selected="onCarrierSelected"
-              class="create-card__search-container"
-            />
+            <div class="create-card__search-container">
+              <FuzzySearch
+                id="carrier"
+                v-model="card.carrierId"
+                :items="carriers"
+                :placeholder="$t('forms.create.searchCarrier')"
+                :default-option="$t('forms.create.selectCarrier')"
+                :required="true"
+                :error-message="$t('forms.create.errors.carrierRequired')"
+                :show-validation-errors="showValidationErrors"
+                @item-selected="onCarrierSelected"
+              />
+            </div>
             <button type="button" class="create-card__add-button" @click="openModal('carrier')">+</button>
           </div>
         </div>
@@ -109,12 +121,13 @@
     
     <!-- Generic Modal Component -->
     <ModalDialog :isVisible="isModalOpen" @close="closeModal" :showCloseButton="true">
-      <component 
-        :is="activeModalComponent" 
-        @close="closeModal" 
+      <EntityModal 
+        v-if="isModalOpen" 
+        :entityType="activeEntityType"
         @receiver-added="loadReceivers"
         @supplier-added="loadSuppliers"
-        @carrier-added="loadCarriers" 
+        @carrier-added="loadCarriers"
+        @close="closeModal"
       />
     </ModalDialog>
   </div>
@@ -122,18 +135,14 @@
 
 <script>
 import ModalDialog from './Modal.vue';
-import ReceiverModal from './ReceiverModal.vue';
-import SupplierModal from './SupplierModal.vue';
-import CarrierModal from './CarrierModal.vue';
+import EntityModal from './Entity-modal.vue'; // Import the new generic EntityModal
 import FuzzySearch from './common/FuzzySearch.vue';
 
 export default {
   name: 'CreateCard',
   components: {
     ModalDialog,
-    ReceiverModal,
-    SupplierModal,
-    CarrierModal,
+    EntityModal, // Register the new EntityModal component
     FuzzySearch
   },
   data() {
@@ -151,10 +160,11 @@ export default {
       suppliers: [],
       carriers: [],
       isModalOpen: false,
-      activeModalComponent: null,
+      activeEntityType: null, // Now store the entity type string instead of component
       message: '',
       isSuccess: false,
-      loading: false
+      loading: false,
+      showValidationErrors: false
     };
   },
   mounted() {
@@ -163,14 +173,26 @@ export default {
   methods: {
     onReceiverSelected(receiver) {
       console.log('Receiver selected:', receiver);
+      // Ensure the value is properly set
+      if (receiver) {
+        this.card.receiverId = receiver.value;
+      }
     },
     
     onSupplierSelected(supplier) {
       console.log('Supplier selected:', supplier);
+      // Ensure the value is properly set
+      if (supplier) {
+        this.card.supplierId = supplier.value;
+      }
     },
     
     onCarrierSelected(carrier) {
       console.log('Carrier selected:', carrier);
+      // Ensure the value is properly set
+      if (carrier) {
+        this.card.carrierId = carrier.value;
+      }
     },
     
     async loadEntities() {
@@ -226,33 +248,37 @@ export default {
       }
     },
     
-    // Generic modal handler
+    // Generic modal handler - Updated to work with EntityModal
     openModal(entityType) {
-      // Map entity type to component name
-      const componentMap = {
-        receiver: 'ReceiverModal',
-        supplier: 'SupplierModal',
-        carrier: 'CarrierModal'
-      };
-      
-      this.activeModalComponent = componentMap[entityType];
+      this.activeEntityType = entityType; // Set the active entity type
       this.isModalOpen = true;
     },
     
     closeModal() {
       this.isModalOpen = false;
+      this.activeEntityType = null; // Reset entity type when modal closes
     },
     
     async createCard() {
-      if (!this.validateForm()) {
-        return;
-      }
-      
+      // Ensure we check for validation after any possible model updates
+      this.$nextTick(() => {
+        this.showValidationErrors = true;
+        
+        if (!this.validateForm()) {
+          return;
+        }
+        
+        this.submitCardData();
+      });
+    },
+    
+    async submitCardData() {
       this.loading = true;
       this.message = '';
       
       try {
-        const cardData = {
+        // Create the card data payload
+        const cardDto = {
           receiverId: this.card.receiverId,
           supplierId: this.card.supplierId,
           carrierId: this.card.carrierId,
@@ -262,14 +288,19 @@ export default {
           priority: this.card.priority
         };
         
-        console.log('Submitting card data:', cardData);
+        // Wrap the cardDto in the expected format
+        const payload = {
+          cardDto: cardDto
+        };
+        
+        console.log('Submitting card data:', payload);
         
         const response = await fetch('/api/card', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(cardData)
+          body: JSON.stringify(payload)
         });
         
         const responseData = await response.json();
@@ -307,20 +338,27 @@ export default {
       // Reset any previous error message
       this.message = '';
       
-      // Check required fields
-      if (!this.card.receiverId) {
+      // Debug - log the current state of the form
+      console.log('Validating form with values:', {
+        receiverId: this.card.receiverId,
+        supplierId: this.card.supplierId,
+        carrierId: this.card.carrierId
+      });
+      
+      // Check required fields with more robust checking
+      if (!this.card.receiverId || this.card.receiverId === '') {
         this.message = this.$t('forms.create.errors.receiverRequired');
         this.isSuccess = false;
         return false;
       }
       
-      if (!this.card.supplierId) {
+      if (!this.card.supplierId || this.card.supplierId === '') {
         this.message = this.$t('forms.create.errors.supplierRequired');
         this.isSuccess = false;
         return false;
       }
       
-      if (!this.card.carrierId) {
+      if (!this.card.carrierId || this.card.carrierId === '') {
         this.message = this.$t('forms.create.errors.carrierRequired');
         this.isSuccess = false;
         return false;
@@ -358,6 +396,7 @@ export default {
         numberOfBundels: 0,
         priority: 'Low'
       };
+      this.showValidationErrors = false;
     }
   }
 };

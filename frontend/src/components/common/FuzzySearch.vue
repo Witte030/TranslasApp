@@ -1,5 +1,5 @@
 <template>
-  <div class="fuzzy-search">
+  <div class="fuzzy-search" :class="{ 'fuzzy-search--error': showError }">
     <div class="fuzzy-search__container">
       <input 
         type="text" 
@@ -15,7 +15,10 @@
         @click="handleInputClick"
         @input="handleInputChange"
         ref="searchInput"
-        :class="{ 'fuzzy-search__input--has-value': displayValue && !isFocused }"
+        :class="{ 
+          'fuzzy-search__input--has-value': displayValue && !isFocused,
+          'fuzzy-search__input--error': showError 
+        }"
       />
       
       <div 
@@ -64,6 +67,11 @@
         :required="required" 
         :value="selectedValue"
       />
+      
+      <!-- Error message -->
+      <div v-if="showError && errorMessage" class="fuzzy-search__error-message">
+        {{ errorMessage }}
+      </div>
     </div>
   </div>
 </template>
@@ -98,9 +106,17 @@ export default {
       type: Boolean,
       default: true
     },
+    errorMessage: {
+      type: String,
+      default: 'This field is required'
+    },
     fuseOptions: {
       type: Object,
       default: () => ({})
+    },
+    showValidationErrors: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -112,7 +128,8 @@ export default {
       isKeyboardNavigation: false,
       isFocused: false,
       blurTimer: null,
-      showDropdown: false
+      showDropdown: false,
+      isDirty: false
     };
   },
   created() {
@@ -143,6 +160,12 @@ export default {
         // Clear if value is empty
         this.searchQuery = '';
       }
+    },
+    showValidationErrors(val) {
+      // Mark as dirty when validation is shown
+      if (val) {
+        this.isDirty = true;
+      }
     }
   },
   computed: {
@@ -160,9 +183,18 @@ export default {
         return this.items;
       }
       
-      // Search using Fuse.js
-      const results = this.fuse.search(this.searchQuery);
-      return results.map(result => result.item);
+      try {
+        // Search using Fuse.js
+        const results = this.fuse.search(this.searchQuery);
+        return results.map(result => result.item);
+      } catch (error) {
+        console.error('Error searching with Fuse.js:', error);
+        return this.items; // Fallback to all items on error
+      }
+    },
+    // Determine if error should be shown
+    showError() {
+      return this.isDirty && this.required && !this.selectedValue && this.showValidationErrors;
     }
   },
   methods: {
@@ -170,15 +202,20 @@ export default {
     initFuse(items) {
       if (!items || items.length === 0) return;
       
-      const options = {
-        keys: ['text'],
-        threshold: 0.4,
-        includeScore: true,
-        includeMatches: true,
-        ...this.fuseOptions
-      };
-      
-      this.fuse = new Fuse(items, options);
+      try {
+        const options = {
+          keys: ['text'],
+          threshold: 0.4,
+          includeScore: true,
+          includeMatches: true,
+          ignoreLocation: true,
+          ...this.fuseOptions
+        };
+        
+        this.fuse = new Fuse(items, options);
+      } catch (error) {
+        console.error('Error initializing Fuse.js:', error);
+      }
     },
     
     initializeSelectedValue() {
@@ -192,6 +229,7 @@ export default {
     
     handleFocus() {
       this.isFocused = true;
+      this.isDirty = true; // Mark as dirty on focus
       
       // Always show dropdown on focus
       this.showDropdown = true;
@@ -217,6 +255,7 @@ export default {
       this.blurTimer = setTimeout(() => {
         this.isFocused = false;
         this.showDropdown = false;
+        this.isDirty = true; // Mark as dirty on blur
         
         // If there's a selected value but no search query, show the selected item's text
         if (this.selectedValue && !this.searchQuery) {
@@ -326,6 +365,7 @@ export default {
       this.isKeyboardNavigation = false;
       this.isFocused = false;
       this.showDropdown = false;
+      this.isDirty = true; // Mark as dirty when selecting an item
       this.$emit('input', item.value);
       this.$emit('item-selected', item);
       
@@ -335,7 +375,7 @@ export default {
     
     // Method to highlight search query in text
     highlightMatches(text) {
-      if (!this.searchQuery || this.searchQuery.length < 2) {
+      if (!this.searchQuery || this.searchQuery.length < 1) {
         return text;
       }
       

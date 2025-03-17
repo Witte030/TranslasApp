@@ -2,8 +2,14 @@
   <transition name="modal-fade">
     <div class="modal" v-if="isVisible" @click.self="closeOnClickOutside ? close() : null">
       <div class="modal-content" role="dialog" :aria-labelledby="title ? 'modal-title' : undefined">
-        <div v-if="showCloseButton" class="modal__close-button" @click="close" aria-label="Close">×</div>
-        <slot></slot>
+        <button v-if="showCloseButton" class="modal__close-button" @click="close" aria-label="Close" type="button">×</button>
+        <h2 v-if="title" id="modal-title" class="modal__title">{{ title }}</h2>
+        <div class="modal__body">
+          <slot></slot>
+        </div>
+        <div class="modal__footer" v-if="$slots.footer">
+          <slot name="footer"></slot>
+        </div>
       </div>
     </div>
   </transition>
@@ -92,27 +98,5 @@ export default {
 <style lang="scss">
 @use '@/assets/scss/main';
 
-/* Additional modal-specific styles */
-.modal-fade-enter-active, .modal-fade-leave-active {
-  transition: opacity 0.3s;
-}
 
-.modal-fade-enter, .modal-fade-leave-to {
-  opacity: 0;
-}
-
-.modal__close-button {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-  color: var(--color-gray);
-  line-height: 1;
-  
-  &:hover {
-    color: var(--color-gray-dark);
-  }
-}
 </style>

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import EntityForm from './EntityForm.vue';
+import EntityForm from './Entity-modal.vue';
 
 export default {
   name: 'CarrierModal',

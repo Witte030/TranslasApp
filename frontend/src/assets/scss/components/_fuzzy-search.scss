@@ -41,6 +41,15 @@
         cursor: text;
       }
     }
+    
+    // Modifier: fuzzy-search__input--error
+    &--error {
+      border-color: $color-danger !important;
+      
+      &:focus {
+        box-shadow: 0 0 0 3px rgba($color-danger, 0.2) !important;
+      }
+    }
   }
   
   // Element: fuzzy-search__selected-value
@@ -176,5 +185,24 @@
     text-align: center;
     color: $color-gray;
     font-style: italic;
+  }
+  
+  // Element: fuzzy-search__error-message
+  &__error-message {
+    margin-top: $spacing-xs;
+    color: $color-danger;
+    font-size: $font-size-sm;
+    line-height: 1.4;
+  }
+  
+  // Modifier: fuzzy-search--error
+  &--error {
+    .fuzzy-search__input {
+      border-color: $color-danger;
+      
+      &:focus {
+        box-shadow: 0 0 0 3px rgba($color-danger, 0.2);
+      }
+    }
   }
 }
