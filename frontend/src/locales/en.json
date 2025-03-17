@@ -64,7 +64,10 @@
     "addCarrier": "Add New Carrier",
     "selectReceiver": "Select a receiver...",
     "selectSupplier": "Select a supplier...",
-    "selectCarrier": "Select a carrier..."
+    "selectCarrier": "Select a carrier...",
+    "searchCarrier": "Search for a carrier...",
+    "searchSupplier": "Search for a supplier...",
+    "searchReceiver": "Search for a receiver..."
   },
       "carrier": {
         "title": "Add New Carrier",

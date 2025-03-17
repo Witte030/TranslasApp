@@ -7,46 +7,59 @@
       <div class="create-card__section">
         <h2 class="create-card__section-title">{{ $t('forms.create.entitySelection') }}</h2>
         
+        <!-- Receiver Selection -->
         <div class="create-card__form-group">
           <label class="create-card__label" for="receiver">{{ $t('cards.labels.receiver') }}</label>
           <div class="create-card__select-container">
-            <select id="receiver" v-model="card.receiverId" required class="create-card__select">
-              <option value="" disabled selected>{{ $t('forms.create.selectReceiver') }}</option>
-              <option v-for="receiver in receivers" :key="receiver.value" :value="receiver.value">
-                {{ receiver.text }}
-              </option>
-            </select>
+            <FuzzySearch
+              id="receiver"
+              v-model="card.receiverId"
+              :items="receivers"
+              :placeholder="$t('forms.create.searchReceiver')"
+              :default-option="$t('forms.create.selectReceiver')"
+              @item-selected="onReceiverSelected"
+              class="create-card__search-container"
+            />
             <button type="button" class="create-card__add-button" @click="openModal('receiver')">+</button>
           </div>
         </div>
 
+        <!-- Supplier Selection -->
         <div class="create-card__form-group">
           <label class="create-card__label" for="supplier">{{ $t('cards.labels.supplier') }}</label>
           <div class="create-card__select-container">
-            <select id="supplier" v-model="card.supplierId" required class="create-card__select">
-              <option value="" disabled selected>{{ $t('forms.create.selectSupplier') }}</option>
-              <option v-for="supplier in suppliers" :key="supplier.value" :value="supplier.value">
-                {{ supplier.text }}
-              </option>
-            </select>
+            <FuzzySearch
+              id="supplier"
+              v-model="card.supplierId"
+              :items="suppliers"
+              :placeholder="$t('forms.create.searchSupplier')"
+              :default-option="$t('forms.create.selectSupplier')"
+              @item-selected="onSupplierSelected"
+              class="create-card__search-container"
+            />
             <button type="button" class="create-card__add-button" @click="openModal('supplier')">+</button>
           </div>
         </div>
 
+        <!-- Carrier Selection -->
         <div class="create-card__form-group">
           <label class="create-card__label" for="carrier">{{ $t('cards.labels.carrier') }}</label>
           <div class="create-card__select-container">
-            <select id="carrier" v-model="card.carrierId" required class="create-card__select">
-              <option value="" disabled selected>{{ $t('forms.create.selectCarrier') }}</option>
-              <option v-for="carrier in carriers" :key="carrier.value" :value="carrier.value">
-                {{ carrier.text }}
-              </option>
-            </select>
+            <FuzzySearch
+              id="carrier"
+              v-model="card.carrierId"
+              :items="carriers"
+              :placeholder="$t('forms.create.searchCarrier')"
+              :default-option="$t('forms.create.selectCarrier')"
+              @item-selected="onCarrierSelected"
+              class="create-card__search-container"
+            />
             <button type="button" class="create-card__add-button" @click="openModal('carrier')">+</button>
           </div>
         </div>
       </div>
 
+      <!-- Card Details Section -->
       <div class="create-card__section">
         <h2 class="create-card__section-title">{{ $t('forms.create.cardDetails') }}</h2>
         
@@ -84,6 +97,7 @@
       </button>
     </form>
 
+    <!-- Status Message -->
     <div v-if="message" 
          class="create-card__message"
          :class="{ 
@@ -111,6 +125,7 @@ import ModalDialog from './Modal.vue';
 import ReceiverModal from './ReceiverModal.vue';
 import SupplierModal from './SupplierModal.vue';
 import CarrierModal from './CarrierModal.vue';
+import FuzzySearch from './common/FuzzySearch.vue';
 
 export default {
   name: 'CreateCard',
@@ -118,7 +133,8 @@ export default {
     ModalDialog,
     ReceiverModal,
     SupplierModal,
-    CarrierModal
+    CarrierModal,
+    FuzzySearch
   },
   data() {
     return {
@@ -145,6 +161,18 @@ export default {
     this.loadEntities();
   },
   methods: {
+    onReceiverSelected(receiver) {
+      console.log('Receiver selected:', receiver);
+    },
+    
+    onSupplierSelected(supplier) {
+      console.log('Supplier selected:', supplier);
+    },
+    
+    onCarrierSelected(carrier) {
+      console.log('Carrier selected:', carrier);
+    },
+    
     async loadEntities() {
       await Promise.all([
         this.loadReceivers(),

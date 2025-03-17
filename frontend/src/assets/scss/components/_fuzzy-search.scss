@@ -1,0 +1,118 @@
+@use 'sass:color';
+@use '../abstracts' as *;
+
+// Block: fuzzy-search
+.fuzzy-search {
+  // Element: fuzzy-search__container
+  &__container {
+    position: relative;
+    width: 100%;
+  }
+
+  // Element: fuzzy-search__input
+  &__input {
+    width: 100%;
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-md;
+    margin-bottom: $spacing-sm;
+    background-color: $color-gray-light;
+    transition: all 0.2s ease;
+    
+    &:focus {
+      border-color: $color-primary;
+      background-color: white;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
+    }
+    
+    &:hover {
+      border-color: $color-gray;
+    }
+  }
+  
+  // Element: fuzzy-search__results
+  &__results {
+    position: absolute;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
+    z-index: 10;
+    box-shadow: $shadow-sm;
+  }
+  
+  // Element: fuzzy-search__result-item
+  &__result-item {
+    position: relative;
+    padding: $spacing-sm $spacing-md;
+    cursor: pointer;
+    border-bottom: 1px solid $color-border;
+    transition: background-color 0.2s ease;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    &:hover {
+      background-color: $color-gray-light;
+    }
+    
+    // Modifier: fuzzy-search__result-item--best
+    &--best {
+      background-color: rgba($color-primary, 0.05);
+      font-weight: $font-weight-medium;
+    }
+    
+    // Modifier: fuzzy-search__result-item--highlighted
+    &--highlighted {
+      background-color: $color-gray-light;
+    }
+  }
+  
+  // Element: fuzzy-search__result-text
+  &__result-text {
+    padding-right: $spacing-xl; // Make room for "Best match" label
+  }
+  
+  // Element: fuzzy-search__best-match
+  &__best-match {
+    position: absolute;
+    right: $spacing-md;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: $font-size-sm;
+    font-weight: $font-weight-normal;
+    color: $color-primary;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    background-color: rgba($color-primary, 0.1);
+  }
+  
+  // Element: fuzzy-search__highlight
+  &__highlight {
+    background-color: rgba($color-warning, 0.3);
+    font-weight: $font-weight-medium;
+    border-radius: 2px;
+    padding: 0 2px;
+  }
+  
+  // Element: fuzzy-search__select
+  &__select {
+    width: 100%;
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-md;
+    background-color: white;
+    
+    &:focus {
+      border-color: $color-primary;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
+    }
+  }
+}

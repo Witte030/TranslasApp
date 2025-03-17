@@ -64,7 +64,10 @@
     "addCarrier": "Nieuwe Vervoerder Toevoegen",
     "selectReceiver": "Selecteer een ontvanger...",
     "selectSupplier": "Selecteer een leverancier...",
-    "selectCarrier": "Selecteer een vervoerder..."
+    "selectCarrier": "Selecteer een vervoerder...",
+    "searchCarrier": "Naam vervoerder",
+    "searchSupplier": "Naam leverancier",
+    "searchReceiver": "Naam ontvanger"
   },
       "carrier": {
         "title": "Nieuwe Vervoerder Toevoegen",
