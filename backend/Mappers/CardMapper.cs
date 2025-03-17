@@ -23,21 +23,25 @@ namespace TranslasApp.Backend.Mappers
             };
         }
 
-        public static CardModel ToCardFromCreateDto(this CreateCardRequestDto createCardDto)
-        {
-            return new CardModel
-            {
-                Date = createCardDto.Date,
-                Receiver = createCardDto.Receiver,
-                Supplier = createCardDto.Supplier,
-                Carrier = createCardDto.Carrier,
-                NumberOfCollies = createCardDto.NumberOfCollies,
-                NumberOfPallets = createCardDto.NumberOfPallets,
-                NumberOfBundels = createCardDto.NumberOfBundels,
-                IsHandled = createCardDto.IsHandled,
-                Priority = createCardDto.Priority
-            };
-        }
+        public static CardModel ToCardFromCreateDto(this CreateCardRequestDto dto)
+{
+    return new CardModel
+    {
+        Date = dto.Date,
+        // Handle receiver, supplier, and carrier correctly
+        Receiver = dto.Receiver != null ? new ReceiverModel { Id = dto.Receiver.Id } : null,
+        Supplier = dto.Supplier != null ? new SupplierModel { 
+            Id = dto.Supplier.Id, 
+            Priority = dto.Supplier.Priority
+        } : null,
+        Carrier = dto.Carrier != null ? new CarrierModel { Id = dto.Carrier.Id } : null,
+        NumberOfCollies = dto.NumberOfCollies,
+        NumberOfPallets = dto.NumberOfPallets,
+        NumberOfBundels = dto.NumberOfBundels,
+        IsHandled = dto.IsHandled,
+        Priority = dto.Priority
+    };
+}
 
         // Fix for the method causing the errors
         public static void UpdateCardFromDto(this CardModel cardModel, UpdateCardRequestDto updateCardDto)

@@ -96,18 +96,18 @@
   }
   
   // Element: create-card__select-container
-  &__select-container {
-    display: flex;
-    align-items: center;
-    gap: $spacing-sm;  // Changed from 10px to use spacing variable
-  }
+&__select-container {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;  // Changed from 10px to use spacing variable
+}
 
-  // Element: create-card__search-container
-  &__search-container {
-    position: relative;
-    width: 100%;
-    flex: 1;  // Add flex: 1 to make sure search takes available space
-  }
+// Element: create-card__search-container
+&__search-container {
+  position: relative;
+  width: 100%;
+  flex: 1;  // Add flex: 1 to make sure search takes available space
+}
 
   // Element: create-card__search-input
   &__search-input {
@@ -156,43 +156,43 @@
     }
   }
   
-  // Element: create-card__add-button
-  &__add-button {
-    width: 36px;
-    height: 36px;
-    border-radius: $border-radius-sm;
-    border: none;
-    background-color: $color-success-dark;  // Changed to success-dark
-    color: white;
-    font-size: 18px;
-    font-weight: $font-weight-bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    margin-left: $spacing-sm;  // Add margin to prevent overlap
-    position: relative;  // Add position relative
-    z-index: 1;  // Add z-index to ensure it's above other elements
-    
-    &:hover {
-      background-color: color.adjust($color-success-dark, $lightness: -5%);  // Slightly darken on hover
-      transform: translateY(-2px);
-      box-shadow: $shadow-sm;
-    }
-    
-    &:active {
-      transform: translateY(0);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-    
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba($color-success-dark, 0.3);  // Match focus to button color
-    }
+ // Element: create-card__add-button
+&__add-button {
+  width: 36px;
+  height: 36px;
+  border-radius: $border-radius-sm;
+  border: none;
+  background-color: $color-success-dark;  // Changed to success-dark
+  color: white;
+  font-size: 18px;
+  font-weight: $font-weight-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  margin-left: $spacing-sm;  // Add margin to prevent overlap
+  position: relative;  // Add position relative
+  z-index: 1;  // Add z-index to ensure it's above other elements
+  
+  &:hover {
+    background-color: darken($color-success-dark, 5%);  // Slightly darken on hover
+    transform: translateY(-2px);
+    box-shadow: $shadow-sm;
   }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($color-success-dark, 0.3);  // Match focus to button color
+  }
+}
   
   // Element: create-card__inline-modal
   &__inline-modal {
@@ -249,16 +249,16 @@
     
     // Modifier: create-card__message--success
     &--success {
-      background-color: color.adjust($color-success, $lightness: 45%);
-      color: color.adjust($color-success, $lightness: -20%);
-      border: 1px solid color.adjust($color-success, $lightness: 35%);
+      background-color: lighten($color-success, 45%);
+      color: darken($color-success, 20%);
+      border: 1px solid lighten($color-success, 35%);
     }
     
     // Modifier: create-card__message--error
     &--error {
-      background-color: color.adjust($color-danger, $lightness: 45%);
-      color: color.adjust($color-danger, $lightness: -10%);
-      border: 1px solid color.adjust($color-danger, $lightness: 35%);
+      background-color: lighten($color-danger, 45%);
+      color: darken($color-danger, 10%);
+      border: 1px solid lighten($color-danger, 35%);
     }
   }
 }

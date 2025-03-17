@@ -899,12 +899,6 @@
   color: #343a40;
   cursor: text;
 }
-.fuzzy-search__input--error {
-  border-color: #dc3545 !important;
-}
-.fuzzy-search__input--error:focus {
-  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2) !important;
-}
 .fuzzy-search__selected-value {
   position: absolute;
   top: 50%;
@@ -1010,18 +1004,6 @@
   text-align: center;
   color: #6c757d;
   font-style: italic;
-}
-.fuzzy-search__error-message {
-  margin-top: 5px;
-  color: #dc3545;
-  font-size: 12px;
-  line-height: 1.4;
-}
-.fuzzy-search--error .fuzzy-search__input {
-  border-color: #dc3545;
-}
-.fuzzy-search--error .fuzzy-search__input:focus {
-  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
 }
 
 .modal {

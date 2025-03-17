@@ -1,7 +1,7 @@
 {
   "navigation": {
     "home": "Home",
-    "createCard": "Goederen Ontvangst"
+    "createCard": "Kaart Maken"
   },
   "home": {
     "welcome": "Welkom bij TranslasApp",
@@ -9,21 +9,21 @@
     "createCard": "Maak een nieuwe kaart"
   },
   "cards": {
-    "title": "Kaartenlijst",
+    "title": "Kaartlijst",
     "filters": {
-      "priority": "Filter op prioriteit:",
+      "priority": "Filter op Prioriteit:",
       "show": "Toon:",
-      "allPriorities": "Alle prioriteiten",
+      "allPriorities": "Alle Prioriteiten",
       "low": "Laag",
       "medium": "Gemiddeld",
       "high": "Hoog",
-      "allCards": "Alle kaarten",
-      "handledOnly": "Alleen afgehandeld",
-      "unhandledOnly": "Alleen niet afgehandeld"
+      "allCards": "Alle Kaarten",
+      "handledOnly": "Alleen Verwerkte",
+      "unhandledOnly": "Alleen Onverwerkte"
     },
     "status": {
-      "handled": "Afgehandeld",
-      "pending": "In behandeling"
+      "handled": "Verwerkt",
+      "pending": "In Behandeling"
     },
     "labels": {
       "receiver": "Ontvanger:",
@@ -33,25 +33,25 @@
       "pallets": "Pallets",
       "bundels": "Bundels",
       "unknown": "Onbekend",
-      "numberOfCollies": "Aantal colli's:",
-      "numberOfPallets": "Aantal pallets:",
-      "numberOfBundels": "Aantal bundels:",
+      "numberOfCollies": "Aantal Colli's:",
+      "numberOfPallets": "Aantal Pallets:",
+      "numberOfBundels": "Aantal Bundels:",
       "priority": "Prioriteit:"
     },
     "actions": {
-      "refresh": "Vernieuwen",
-      "markHandled": "Markeer als afgehandeld",
-      "markUnhandled": "Markeer als niet afgehandeld",
-      "viewDetails": "Details bekijken",
-      "createNew": "Nieuwe kaart aanmaken",
-      "tryAgain": "Opnieuw proberen",
-      "create": "Kaart aanmaken"
+      "refresh": "Verversen",
+      "markHandled": "Markeren als Verwerkt",
+      "markUnhandled": "Markeren als Onverwerkt",
+      "viewDetails": "Details Bekijken",
+      "createNew": "Nieuwe Kaart Maken",
+      "tryAgain": "Opnieuw Proberen",
+      "create": "Kaart Maken"
     },
     "messages": {
       "loading": "Kaarten laden...",
-      "noCards": "Geen kaarten gevonden. Maak een nieuwe kaart aan om te beginnen.",
+      "noCards": "Geen kaarten gevonden. Maak een nieuwe kaart om te beginnen.",
       "failedLoad": "Kaarten laden mislukt: ",
-      "failedUpdate": "Updaten van status mislukt: "
+      "failedUpdate": "Status bijwerken mislukt: "
     }
   },
   "forms": {
@@ -65,48 +65,24 @@
       "selectReceiver": "Selecteer een ontvanger...",
       "selectSupplier": "Selecteer een leverancier...",
       "selectCarrier": "Selecteer een vervoerder...",
-      "searchCarrier": "Naam vervoerder",
-      "searchSupplier": "Naam leverancier",
-      "searchReceiver": "Naam ontvanger",
+      "searchCarrier": "Zoek een vervoerder...",
+      "searchSupplier": "Zoek een leverancier...",
+      "searchReceiver": "Zoek een ontvanger...",
       "success": "Kaart succesvol aangemaakt!",
-      "error": "Fout bij het maken van de kaart:",
+      "error": "Fout bij aanmaken kaart: ",
       "errors": {
-        "receiverRequired": "Selecteer een ontvanger",
-        "supplierRequired": "Selecteer een leverancier",
-        "carrierRequired": "Selecteer een vervoerder",
-        "invalidCollies": "Voer een geldig aantal colli's in",
-        "invalidPallets": "Voer een geldig aantal pallets in",
-        "invalidBundels": "Voer een geldig aantal bundels in"
+        "receiverRequired": "Ontvanger is verplicht",
+        "supplierRequired": "Leverancier is verplicht",
+        "carrierRequired": "Vervoerder is verplicht",
+        "invalidCollies": "Aantal colli's moet een geldig getal zijn",
+        "invalidPallets": "Aantal pallets moet een geldig getal zijn",
+        "invalidBundels": "Aantal bundels moet een geldig getal zijn"
       }
-    },
-    "carrier": {
-      "title": "Nieuwe Vervoerder Toevoegen",
-      "name": "Vervoerder Naam",
-      "add": "Vervoerder Toevoegen",
-      "adding": "Toevoegen...",
-      "success": "Vervoerder succesvol toegevoegd!",
-      "error": "Fout bij toevoegen van vervoerder: "
-    },
-    "supplier": {
-      "title": "Nieuwe Leverancier Toevoegen",
-      "name": "Leverancier Naam", 
-      "add": "Leverancier Toevoegen",
-      "adding": "Toevoegen...",
-      "success": "Leverancier succesvol toegevoegd!",
-      "error": "Fout bij toevoegen van leverancier: "
-    },
-    "receiver": {
-      "title": "Nieuwe Ontvanger Toevoegen",
-      "name": "Ontvanger Naam",
-      "add": "Ontvanger Toevoegen",
-      "adding": "Toevoegen...",
-      "success": "Ontvanger succesvol toegevoegd!",
-      "error": "Fout bij toevoegen van ontvanger: "
     }
   },
   "common": {
     "loading": "Laden...",
-    "processing": "Bezig...",
+    "processing": "Verwerken...",
     "error": "Fout: ",
     "submit": "Versturen",
     "cancel": "Annuleren"

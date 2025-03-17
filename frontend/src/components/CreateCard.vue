@@ -11,19 +11,17 @@
         <div class="create-card__form-group">
           <label class="create-card__label" for="receiver">{{ $t('cards.labels.receiver') }}</label>
           <div class="create-card__select-container">
-            <div class="create-card__search-container">
-              <FuzzySearch
-                id="receiver"
-                v-model="card.receiverId"
-                :items="receivers"
-                :placeholder="$t('forms.create.searchReceiver')"
-                :default-option="$t('forms.create.selectReceiver')"
-                :required="true"
-                :error-message="$t('forms.create.errors.receiverRequired')"
-                :show-validation-errors="showValidationErrors"
-                @item-selected="onReceiverSelected"
-              />
-            </div>
+            <FuzzySearch
+              id="receiver"
+              v-model="card.receiver"
+              :items="receivers"
+              label-prop="text"
+              value-prop="value"
+              :placeholder="$t('forms.create.searchReceiver')"
+              :default-option="$t('forms.create.selectReceiver')"
+              @item-selected="onReceiverSelected"
+              class="create-card__search-container"
+            />
             <button type="button" class="create-card__add-button" @click="openModal('receiver')">+</button>
           </div>
         </div>
@@ -32,19 +30,17 @@
         <div class="create-card__form-group">
           <label class="create-card__label" for="supplier">{{ $t('cards.labels.supplier') }}</label>
           <div class="create-card__select-container">
-            <div class="create-card__search-container">
-              <FuzzySearch
-                id="supplier"
-                v-model="card.supplierId"
-                :items="suppliers"
-                :placeholder="$t('forms.create.searchSupplier')"
-                :default-option="$t('forms.create.selectSupplier')"
-                :required="true"
-                :error-message="$t('forms.create.errors.supplierRequired')"
-                :show-validation-errors="showValidationErrors"
-                @item-selected="onSupplierSelected"
-              />
-            </div>
+            <FuzzySearch
+              id="supplier"
+              v-model="card.supplier"
+              :items="suppliers"
+              label-prop="text"
+              value-prop="value"
+              :placeholder="$t('forms.create.searchSupplier')"
+              :default-option="$t('forms.create.selectSupplier')"
+              @item-selected="onSupplierSelected"
+              class="create-card__search-container"
+            />
             <button type="button" class="create-card__add-button" @click="openModal('supplier')">+</button>
           </div>
         </div>
@@ -53,19 +49,17 @@
         <div class="create-card__form-group">
           <label class="create-card__label" for="carrier">{{ $t('cards.labels.carrier') }}</label>
           <div class="create-card__select-container">
-            <div class="create-card__search-container">
-              <FuzzySearch
-                id="carrier"
-                v-model="card.carrierId"
-                :items="carriers"
-                :placeholder="$t('forms.create.searchCarrier')"
-                :default-option="$t('forms.create.selectCarrier')"
-                :required="true"
-                :error-message="$t('forms.create.errors.carrierRequired')"
-                :show-validation-errors="showValidationErrors"
-                @item-selected="onCarrierSelected"
-              />
-            </div>
+            <FuzzySearch
+              id="carrier"
+              v-model="card.carrier"
+              :items="carriers"
+              label-prop="text"
+              value-prop="value"
+              :placeholder="$t('forms.create.searchCarrier')"
+              :default-option="$t('forms.create.selectCarrier')"
+              @item-selected="onCarrierSelected"
+              class="create-card__search-container"
+            />
             <button type="button" class="create-card__add-button" @click="openModal('carrier')">+</button>
           </div>
         </div>
@@ -135,22 +129,22 @@
 
 <script>
 import ModalDialog from './Modal.vue';
-import EntityModal from './Entity-modal.vue'; // Import the new generic EntityModal
+import EntityModal from './Entity-modal.vue';
 import FuzzySearch from './common/FuzzySearch.vue';
 
 export default {
   name: 'CreateCard',
   components: {
     ModalDialog,
-    EntityModal, // Register the new EntityModal component
+    EntityModal,
     FuzzySearch
   },
   data() {
     return {
       card: {
-        receiverId: '',
-        supplierId: '',
-        carrierId: '',
+        receiver: null,
+        supplier: null,
+        carrier: null,
         numberOfCollies: 0,
         numberOfPallets: 0,
         numberOfBundels: 0,
@@ -159,11 +153,11 @@ export default {
       receivers: [],
       suppliers: [],
       carriers: [],
-      isModalOpen: false,
-      activeEntityType: null, // Now store the entity type string instead of component
       message: '',
       isSuccess: false,
       loading: false,
+      isModalOpen: false,
+      activeEntityType: null,
       showValidationErrors: false
     };
   },
@@ -171,76 +165,55 @@ export default {
     this.loadEntities();
   },
   methods: {
-    onReceiverSelected(receiver) {
-      console.log('Receiver selected:', receiver);
-      // Ensure the value is properly set
-      if (receiver) {
-        this.card.receiverId = receiver.value;
-      }
+    onReceiverSelected(selected) {
+      this.card.receiver = selected && selected.value ? { ...selected.value } : null;
     },
-    
-    onSupplierSelected(supplier) {
-      console.log('Supplier selected:', supplier);
-      // Ensure the value is properly set
-      if (supplier) {
-        this.card.supplierId = supplier.value;
-      }
+    onSupplierSelected(selected) {
+      this.card.supplier = selected && selected.value ? { ...selected.value } : null;
     },
-    
-    onCarrierSelected(carrier) {
-      console.log('Carrier selected:', carrier);
-      // Ensure the value is properly set
-      if (carrier) {
-        this.card.carrierId = carrier.value;
-      }
+    onCarrierSelected(selected) {
+      this.card.carrier = selected && selected.value ? { ...selected.value } : null;
     },
-    
+
     async loadEntities() {
-      await Promise.all([
-        this.loadReceivers(),
-        this.loadSuppliers(),
-        this.loadCarriers()
-      ]);
+      await Promise.all([this.loadReceivers(), this.loadSuppliers(), this.loadCarriers()]);
     },
-    
     async loadReceivers() {
       try {
         const response = await fetch('/api/receiver');
         if (response.ok) {
           const data = await response.json();
-          this.receivers = data.map(r => ({
-            value: r.id,
-            text: r.name
+          this.receivers = data.map(item => ({
+            value: item,
+            text: item.name
           }));
         }
       } catch (error) {
         console.error('Error loading receivers:', error);
       }
     },
-    
     async loadSuppliers() {
       try {
         const response = await fetch('/api/supplier');
         if (response.ok) {
           const data = await response.json();
-          this.suppliers = data.map(s => ({
-            value: s.id,
-            text: s.name
+          this.suppliers = data.map(item => ({
+            value: item,
+            text: item.name
           }));
         }
       } catch (error) {
         console.error('Error loading suppliers:', error);
       }
     },
-    
     async loadCarriers() {
       try {
         const response = await fetch('/api/carrier');
         if (response.ok) {
           const data = await response.json();
-          this.carriers = data.map(c => ({
-            value: c.id,
-            text: c.name
+          this.carriers = data.map(item => ({
+            value: item,
+            text: item.name
           }));
         }
       } catch (error) {
@@ -248,155 +221,147 @@ export default {
       }
     },
     
-    // Generic modal handler - Updated to work with EntityModal
-    openModal(entityType) {
-      this.activeEntityType = entityType; // Set the active entity type
-      this.isModalOpen = true;
-    },
-    
-    closeModal() {
-      this.isModalOpen = false;
-      this.activeEntityType = null; // Reset entity type when modal closes
-    },
-    
-    async createCard() {
-      // Ensure we check for validation after any possible model updates
+    createCard() {
       this.$nextTick(() => {
         this.showValidationErrors = true;
-        
-        if (!this.validateForm()) {
-          return;
-        }
-        
+        if (!this.validateForm()) return;
         this.submitCardData();
       });
     },
     
     async submitCardData() {
-      this.loading = true;
-      this.message = '';
+  this.loading = true;
+  this.message = '';
+  try {
+    // Format the data to match exactly what the backend expects
+    const requestData = {
+      date: new Date().toISOString(),
+      receiver: this.card.receiver ? { 
+        id: this.card.receiver.id, 
+        name: null 
+      } : null,
+      supplier: this.card.supplier ? { 
+        id: this.card.supplier.id, 
+        name: null, 
+        priority: this.card.supplier.priority || 0 
+      } : null,
+      carrier: this.card.carrier ? { 
+        id: this.card.carrier.id, 
+        name: null 
+      } : null,
+      numberOfCollies: this.card.numberOfCollies,
+      numberOfPallets: this.card.numberOfPallets,
+      numberOfBundels: this.card.numberOfBundels,
+      priority: this.getPriorityEnum(this.card.priority),
+      isHandled: false
+    };
+    
+    const response = await fetch('/api/card', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestData)
+    });
+    
+    // Read the response as text first
+    const responseText = await response.text();
+    
+    // If the response is not ok, handle the error
+    if (!response.ok) {
+      let errorMsg = `Server error: ${response.status}`;
       
+      // Try to parse the response text as JSON
       try {
-        // Create the card data payload
-        const cardDto = {
-          receiverId: this.card.receiverId,
-          supplierId: this.card.supplierId,
-          carrierId: this.card.carrierId,
-          numberOfCollies: parseInt(this.card.numberOfCollies),
-          numberOfPallets: parseInt(this.card.numberOfPallets),
-          numberOfBundels: parseInt(this.card.numberOfBundels),
-          priority: this.card.priority
-        };
-        
-        // Wrap the cardDto in the expected format
-        const payload = {
-          cardDto: cardDto
-        };
-        
-        console.log('Submitting card data:', payload);
-        
-        const response = await fetch('/api/card', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
-        
-        const responseData = await response.json();
-        
-        if (!response.ok) {
-          let errorMessage = 'Unknown error occurred';
-          
-          if (responseData && responseData.message) {
-            errorMessage = responseData.message;
-          } else if (responseData && responseData.errors) {
-            // Join multiple validation errors
-            errorMessage = Object.values(responseData.errors).join(', ');
-          }
-          
-          throw new Error(errorMessage);
+        const errorData = JSON.parse(responseText);
+        if (errorData?.message) {
+          errorMsg = errorData.message;
+        } else if (errorData?.errors) {
+          errorMsg = Object.values(errorData.errors).join(', ');
         }
-        
-        console.log('Card created successfully:', responseData);
-        this.message = this.$t('forms.create.success');
-        this.isSuccess = true;
-        
-        // Reset form
-        this.resetForm();
-        
-      } catch (error) {
-        console.error('Error creating card:', error);
-        this.message = `${this.$t('forms.create.error')} ${error.message}`;
-        this.isSuccess = false;
-      } finally {
-        this.loading = false;
+      } catch (e) {
+        // If the response text is not valid JSON, use it as is (truncated)
+        if (responseText) {
+          errorMsg = `${response.status}: ${responseText.substring(0, 100)}...`;
+        }
       }
+      
+      throw new Error(errorMsg);
+    }
+    
+    // If response is ok, no need to parse it again since we're not using it
+    // Just proceed with the success case
+    this.message = this.$t('forms.create.success');
+    this.isSuccess = true;
+    this.resetForm();
+  } catch (error) {
+    this.message = `${this.$t('forms.create.error')} ${error.message}`;
+    this.isSuccess = false;
+  } finally {
+    this.loading = false;
+  }
+},
+    
+    getPriorityEnum(str) {
+      const priorityMap = { Low: 0, Medium: 1, High: 2 };
+      return priorityMap[str] || 0;
     },
     
     validateForm() {
-      // Reset any previous error message
       this.message = '';
-      
-      // Debug - log the current state of the form
-      console.log('Validating form with values:', {
-        receiverId: this.card.receiverId,
-        supplierId: this.card.supplierId,
-        carrierId: this.card.carrierId
-      });
-      
-      // Check required fields with more robust checking
-      if (!this.card.receiverId || this.card.receiverId === '') {
+      // Make sure all required fields are set
+      if (!this.card.receiver) {
         this.message = this.$t('forms.create.errors.receiverRequired');
         this.isSuccess = false;
         return false;
       }
-      
-      if (!this.card.supplierId || this.card.supplierId === '') {
+      if (!this.card.supplier) {
         this.message = this.$t('forms.create.errors.supplierRequired');
         this.isSuccess = false;
         return false;
       }
-      
-      if (!this.card.carrierId || this.card.carrierId === '') {
+      if (!this.card.carrier) {
         this.message = this.$t('forms.create.errors.carrierRequired');
         this.isSuccess = false;
         return false;
       }
-      
       // Validate numeric fields
       if (isNaN(this.card.numberOfCollies) || this.card.numberOfCollies < 0) {
         this.message = this.$t('forms.create.errors.invalidCollies');
         this.isSuccess = false;
         return false;
       }
-      
       if (isNaN(this.card.numberOfPallets) || this.card.numberOfPallets < 0) {
         this.message = this.$t('forms.create.errors.invalidPallets');
         this.isSuccess = false;
         return false;
       }
-      
       if (isNaN(this.card.numberOfBundels) || this.card.numberOfBundels < 0) {
         this.message = this.$t('forms.create.errors.invalidBundels');
         this.isSuccess = false;
         return false;
       }
-      
       return true;
     },
     
     resetForm() {
       this.card = {
-        receiverId: '',
-        supplierId: '',
-        carrierId: '',
+        receiver: null,
+        supplier: null,
+        carrier: null,
         numberOfCollies: 0,
         numberOfPallets: 0,
         numberOfBundels: 0,
         priority: 'Low'
       };
       this.showValidationErrors = false;
+    },
+    
+    openModal(entityType) {
+      this.activeEntityType = entityType;
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+      this.activeEntityType = null;
     }
   }
 };

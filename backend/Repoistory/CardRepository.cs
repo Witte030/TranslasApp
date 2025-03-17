@@ -19,27 +19,27 @@ namespace TranslasApp.Backend.Repoistory
         }
 
         public async Task<CardModel> CreateAsync(CardModel cardModel)
-        {
-            // Handle reference entities
-            if (cardModel.Receiver != null)
-            {
-                cardModel.Receiver = null;
-            }
-            
-            if (cardModel.Supplier != null)
-            {
-                cardModel.Supplier = null;
-            }
-            
-            if (cardModel.Carrier != null)
-            {
-                cardModel.Carrier = null;
-            }
-            
-            await _context.Cards.AddAsync(cardModel);
-            await _context.SaveChangesAsync();
-            return cardModel;
-        }
+{
+    // Attach entities properly to avoid tracking issues
+    if (cardModel.Receiver != null)
+    {
+        _context.Entry(cardModel.Receiver).State = EntityState.Unchanged;
+    }
+    
+    if (cardModel.Supplier != null)
+    {
+        _context.Entry(cardModel.Supplier).State = EntityState.Unchanged;
+    }
+    
+    if (cardModel.Carrier != null)
+    {
+        _context.Entry(cardModel.Carrier).State = EntityState.Unchanged;
+    }
+    
+    _context.Cards.Add(cardModel);
+    await _context.SaveChangesAsync();
+    return cardModel;
+}
 
         public async Task<List<CardModel>> GetAllAsync()
         {

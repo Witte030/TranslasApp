@@ -35,13 +35,37 @@ namespace TranslasApp.Backend.Controllers
             return Ok(card.ToCardDto());
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateCardRequestDto cardDto)
+[HttpPost]
+[ProducesResponseType(StatusCodes.Status201Created)]
+[ProducesResponseType(StatusCodes.Status400BadRequest)]
+public async Task<IActionResult> Create([FromBody] CreateCardRequestDto cardDto)
+{
+    try
+    {
+        if (!ModelState.IsValid)
         {
-            var card = cardDto.ToCardFromCreateDto();
-            await _cardRepository.CreateAsync(card);
-            return CreatedAtAction(nameof(GetById), new { id = card.Id }, card.ToCardDto());
+            return BadRequest(new { errors = ModelState });
         }
+        
+        var card = cardDto.ToCardFromCreateDto();
+        await _cardRepository.CreateAsync(card);
+        return CreatedAtAction(nameof(GetById), new { id = card.Id }, card.ToCardDto());
+    }
+    catch (Exception ex)
+    {
+        // Log the exception with more details
+        Console.WriteLine($"Error creating card: {ex.Message}");
+        Console.WriteLine($"Stack trace: {ex.StackTrace}");
+        
+        if (ex.InnerException != null)
+        {
+            Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+            Console.WriteLine($"Inner stack trace: {ex.InnerException.StackTrace}");
+        }
+        
+        return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+    }
+}
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCardRequestDto cardDto)

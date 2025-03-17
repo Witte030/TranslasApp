@@ -98,5 +98,4 @@ export default {
 <style lang="scss">
 @use '@/assets/scss/main';
 
-
 </style>
