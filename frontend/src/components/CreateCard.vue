@@ -244,45 +244,55 @@ export default {
     },
     
     async createCard() {
+      if (!this.validateForm()) {
+        return;
+      }
+      
       this.loading = true;
       this.message = '';
       
       try {
+        const cardData = {
+          receiverId: this.card.receiverId,
+          supplierId: this.card.supplierId,
+          carrierId: this.card.carrierId,
+          numberOfCollies: parseInt(this.card.numberOfCollies),
+          numberOfPallets: parseInt(this.card.numberOfPallets),
+          numberOfBundels: parseInt(this.card.numberOfBundels),
+          priority: this.card.priority
+        };
+        
+        console.log('Submitting card data:', cardData);
+        
         const response = await fetch('/api/card', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({
-            receiverId: this.card.receiverId,
-            supplierId: this.card.supplierId,
-            carrierId: this.card.carrierId,
-            numberOfCollies: this.card.numberOfCollies,
-            numberOfPallets: this.card.numberOfPallets,
-            numberOfBundels: this.card.numberOfBundels,
-            priority: this.card.priority
-          })
+          body: JSON.stringify(cardData)
         });
         
+        const responseData = await response.json();
+        
         if (!response.ok) {
-          throw new Error(`${response.status} ${response.statusText}`);
+          let errorMessage = 'Unknown error occurred';
+          
+          if (responseData && responseData.message) {
+            errorMessage = responseData.message;
+          } else if (responseData && responseData.errors) {
+            // Join multiple validation errors
+            errorMessage = Object.values(responseData.errors).join(', ');
+          }
+          
+          throw new Error(errorMessage);
         }
         
-        const result = await response.json();
-        console.log('Card created successfully:', result);
+        console.log('Card created successfully:', responseData);
         this.message = this.$t('forms.create.success');
         this.isSuccess = true;
         
         // Reset form
-        this.card = {
-          receiverId: '',
-          supplierId: '',
-          carrierId: '',
-          numberOfCollies: 0,
-          numberOfPallets: 0,
-          numberOfBundels: 0,
-          priority: 'Low'
-        };
+        this.resetForm();
         
       } catch (error) {
         console.error('Error creating card:', error);
@@ -291,6 +301,63 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    
+    validateForm() {
+      // Reset any previous error message
+      this.message = '';
+      
+      // Check required fields
+      if (!this.card.receiverId) {
+        this.message = this.$t('forms.create.errors.receiverRequired');
+        this.isSuccess = false;
+        return false;
+      }
+      
+      if (!this.card.supplierId) {
+        this.message = this.$t('forms.create.errors.supplierRequired');
+        this.isSuccess = false;
+        return false;
+      }
+      
+      if (!this.card.carrierId) {
+        this.message = this.$t('forms.create.errors.carrierRequired');
+        this.isSuccess = false;
+        return false;
+      }
+      
+      // Validate numeric fields
+      if (isNaN(this.card.numberOfCollies) || this.card.numberOfCollies < 0) {
+        this.message = this.$t('forms.create.errors.invalidCollies');
+        this.isSuccess = false;
+        return false;
+      }
+      
+      if (isNaN(this.card.numberOfPallets) || this.card.numberOfPallets < 0) {
+        this.message = this.$t('forms.create.errors.invalidPallets');
+        this.isSuccess = false;
+        return false;
+      }
+      
+      if (isNaN(this.card.numberOfBundels) || this.card.numberOfBundels < 0) {
+        this.message = this.$t('forms.create.errors.invalidBundels');
+        this.isSuccess = false;
+        return false;
+      }
+      
+      return true;
+    },
+    
+    resetForm() {
+      this.card = {
+        receiverId: '',
+        supplierId: '',
+        carrierId: '',
+        numberOfCollies: 0,
+        numberOfPallets: 0,
+        numberOfBundels: 0,
+        priority: 'Low'
+      };
     }
   }
 };

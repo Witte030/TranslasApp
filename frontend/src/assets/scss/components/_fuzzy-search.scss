@@ -16,7 +16,6 @@
     border: 1px solid $color-border;
     border-radius: $border-radius-sm;
     font-size: $font-size-md;
-    margin-bottom: $spacing-sm;
     background-color: $color-gray-light;
     transition: all 0.2s ease;
     
@@ -29,6 +28,56 @@
     
     &:hover {
       border-color: $color-gray;
+    }
+    
+    // Modifier: fuzzy-search__input--has-value
+    &--has-value {
+      color: transparent;
+      text-shadow: 0 0 0 transparent;
+      cursor: pointer;
+      
+      &:focus {
+        color: $color-gray-dark;
+        cursor: text;
+      }
+    }
+  }
+  
+  // Element: fuzzy-search__selected-value
+  &__selected-value {
+    position: absolute;
+    top: 50%;
+    left: $spacing-md;
+    transform: translateY(-50%);
+    color: $color-gray-dark;
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    
+    .fuzzy-search__input:focus + & {
+      display: none;
+    }
+  }
+  
+  // Element: fuzzy-search__clear-button
+  &__clear-button {
+    background: none;
+    border: none;
+    color: $color-gray;
+    font-size: 18px;
+    line-height: 1;
+    padding: 0 $spacing-xs;
+    margin-left: $spacing-xs;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: all 0.2s ease;
+    border-radius: 50%;
+    
+    &:hover {
+      color: $color-danger;
+      background-color: rgba($color-danger, 0.1);
     }
   }
   
@@ -43,6 +92,7 @@
     border-radius: $border-radius-sm;
     z-index: 10;
     box-shadow: $shadow-sm;
+    margin-top: $spacing-xs;
   }
   
   // Element: fuzzy-search__result-item
@@ -51,7 +101,7 @@
     padding: $spacing-sm $spacing-md;
     cursor: pointer;
     border-bottom: 1px solid $color-border;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
     
     &:last-child {
       border-bottom: none;
@@ -69,7 +119,27 @@
     
     // Modifier: fuzzy-search__result-item--highlighted
     &--highlighted {
-      background-color: $color-gray-light;
+      background-color: rgba($color-primary, 0.15);
+      border-left: 3px solid $color-primary;
+      padding-left: calc(#{$spacing-md} - 3px);
+      
+      &:hover {
+        background-color: rgba($color-primary, 0.2);
+      }
+      
+      .fuzzy-search__result-text {
+        font-weight: $font-weight-medium;
+        color: $color-primary-dark;
+      }
+    }
+    
+    // Modifier: fuzzy-search__result-item--selected
+    &--selected {
+      background-color: rgba($color-primary, 0.1);
+      
+      &:hover {
+        background-color: rgba($color-primary, 0.15);
+      }
     }
   }
   
@@ -100,19 +170,11 @@
     padding: 0 2px;
   }
   
-  // Element: fuzzy-search__select
-  &__select {
-    width: 100%;
-    padding: $spacing-sm $spacing-md;
-    border: 1px solid $color-border;
-    border-radius: $border-radius-sm;
-    font-size: $font-size-md;
-    background-color: white;
-    
-    &:focus {
-      border-color: $color-primary;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
-    }
+  // Element: fuzzy-search__no-results
+  &__no-results {
+    padding: $spacing-md;
+    text-align: center;
+    color: $color-gray;
+    font-style: italic;
   }
 }

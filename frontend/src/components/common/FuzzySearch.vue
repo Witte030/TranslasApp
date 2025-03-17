@@ -3,46 +3,67 @@
     <div class="fuzzy-search__container">
       <input 
         type="text" 
-        :placeholder="placeholder"
+        :placeholder="isFocused || !displayValue ? placeholder : ''"
         v-model="searchQuery" 
         class="fuzzy-search__input"
         @keydown.down.prevent="navigateDown"
         @keydown.up.prevent="navigateUp"
         @keydown.enter.prevent="selectHighlighted"
         @keydown.esc="clearSearch"
+        @focus="handleFocus"
+        @blur="handleBlur"
+        @click="handleInputClick"
+        @input="handleInputChange"
         ref="searchInput"
+        :class="{ 'fuzzy-search__input--has-value': displayValue && !isFocused }"
       />
       
-      <div v-if="searchQuery && filteredItems.length > 0" class="fuzzy-search__results">
+      <div 
+        v-if="displayValue && !isFocused" 
+        class="fuzzy-search__selected-value"
+        @click="handleSelectedValueClick"
+      >
+        {{ displayValue }}
+        <button 
+          type="button" 
+          class="fuzzy-search__clear-button" 
+          @click.stop="clearSelection"
+          aria-label="Clear selection"
+        >×</button>
+      </div>
+      
+      <!-- Single dropdown for both all items and search results -->
+      <div v-if="(showDropdown && isFocused)" class="fuzzy-search__results">
+        <div v-if="displayedItems.length === 0" class="fuzzy-search__no-results">
+          No results found
+        </div>
         <div 
-          v-for="(item, index) in filteredItems" 
+          v-for="(item, index) in displayedItems" 
           :key="item.value"
           class="fuzzy-search__result-item"
           :class="{ 
-            'fuzzy-search__result-item--best': index === 0,
-            'fuzzy-search__result-item--highlighted': highlightedIndex === index
+            'fuzzy-search__result-item--best': searchQuery && index === 0,
+            'fuzzy-search__result-item--highlighted': highlightedIndex === index,
+            'fuzzy-search__result-item--selected': selectedValue === item.value
           }"
           @click="selectItem(item)"
           @mouseover="highlightedIndex = index"
           @mouseleave="mouseleaveHandler"
           ref="resultItems"
         >
-          <div v-html="highlightMatches(item.text)" class="fuzzy-search__result-text"></div>
-          <span v-if="index === 0" class="fuzzy-search__best-match">Best match</span>
+          <div v-html="searchQuery ? highlightMatches(item.text) : item.text" class="fuzzy-search__result-text"></div>
+          <span v-if="searchQuery && index === 0" class="fuzzy-search__best-match">Best match</span>
         </div>
       </div>
       
-      <select 
+      <!-- Hidden input for form validation -->
+      <input 
+        type="hidden" 
         :id="id" 
-        v-model="selectedValue" 
-        :required="required"
-        class="fuzzy-search__select"
-      >
-        <option value="" disabled selected>{{ defaultOption }}</option>
-        <option v-for="item in items" :key="item.value" :value="item.value">
-          {{ item.text }}
-        </option>
-      </select>
+        :name="id" 
+        :required="required" 
+        :value="selectedValue"
+      />
     </div>
   </div>
 </template>
@@ -88,8 +109,19 @@ export default {
       fuse: null,
       selectedValue: this.value,
       highlightedIndex: -1,
-      isKeyboardNavigation: false
+      isKeyboardNavigation: false,
+      isFocused: false,
+      blurTimer: null,
+      showDropdown: false
     };
+  },
+  created() {
+    // Initialize Fuse right away
+    this.initFuse(this.items);
+  },
+  mounted() {
+    // If there's an initial value, make sure to display it
+    this.initializeSelectedValue();
   },
   watch: {
     items: {
@@ -100,171 +132,220 @@ export default {
     },
     value(newValue) {
       this.selectedValue = newValue;
-    },
-    selectedValue(newValue) {
-      this.$emit('input', newValue);
+      
+      // Update displayed text when value changes externally
       if (newValue) {
         const selectedItem = this.items.find(item => item.value === newValue);
         if (selectedItem) {
-          this.$emit('item-selected', selectedItem);
+          this.searchQuery = selectedItem.text;
         }
+      } else {
+        // Clear if value is empty
+        this.searchQuery = '';
       }
-    },
-    searchQuery() {
-      // Reset highlighted index when search query changes
-      this.highlightedIndex = -1;
-    },
-    filteredItems() {
-      // Default highlight the first item when results change
-      this.$nextTick(() => {
-        if (this.filteredItems.length > 0 && this.isKeyboardNavigation) {
-          this.highlightedIndex = 0;
-        }
-      });
     }
   },
   computed: {
-    searchResults() {
-      if (!this.searchQuery || !this.fuse) {
-        return [];
+    displayValue() {
+      if (this.selectedValue) {
+        const selectedItem = this.items.find(item => item.value === this.selectedValue);
+        return selectedItem ? selectedItem.text : '';
       }
-      
-      return this.fuse.search(this.searchQuery);
+      return '';
     },
-    filteredItems() {
+    // Get items to display based on search query
+    displayedItems() {
       if (!this.searchQuery || !this.fuse) {
+        // If no search query, show all items
         return this.items;
       }
       
-      // Use the searchResults computed property instead of modifying data
-      return this.searchResults.map(result => result.item);
+      // Search using Fuse.js
+      const results = this.fuse.search(this.searchQuery);
+      return results.map(result => result.item);
     }
   },
   methods: {
+    // Initialize Fuse.js with items
     initFuse(items) {
-      const defaultOptions = {
+      if (!items || items.length === 0) return;
+      
+      const options = {
         keys: ['text'],
         threshold: 0.4,
         includeScore: true,
-        includeMatches: true, // Include match info for highlighting
-        ignoreLocation: true
+        includeMatches: true,
+        ...this.fuseOptions
       };
       
-      const options = { ...defaultOptions, ...this.fuseOptions };
-      this.fuse = new Fuse(items || [], options);
+      this.fuse = new Fuse(items, options);
+    },
+    
+    initializeSelectedValue() {
+      if (this.selectedValue) {
+        const selectedItem = this.items.find(item => item.value === this.selectedValue);
+        if (selectedItem) {
+          this.searchQuery = selectedItem.text;
+        }
+      }
+    },
+    
+    handleFocus() {
+      this.isFocused = true;
+      
+      // Always show dropdown on focus
+      this.showDropdown = true;
+      
+      // Clear search if needed
+      if (this.selectedValue) {
+        const selectedItem = this.items.find(item => item.value === this.selectedValue);
+        if (selectedItem && this.searchQuery === selectedItem.text) {
+          // Clear search to allow new search
+          this.searchQuery = '';
+        }
+      }
+      
+      // Clear any pending blur timer
+      if (this.blurTimer) {
+        clearTimeout(this.blurTimer);
+        this.blurTimer = null;
+      }
+    },
+    
+    handleBlur() {
+      // Use a small delay to allow click events on results to complete
+      this.blurTimer = setTimeout(() => {
+        this.isFocused = false;
+        this.showDropdown = false;
+        
+        // If there's a selected value but no search query, show the selected item's text
+        if (this.selectedValue && !this.searchQuery) {
+          const selectedItem = this.items.find(item => item.value === this.selectedValue);
+          if (selectedItem) {
+            this.searchQuery = selectedItem.text;
+          }
+        }
+      }, 200); // Slightly longer timeout for reliable clicks
+    },
+    
+    handleInputClick() {
+      if (!this.isFocused) {
+        this.$refs.searchInput.focus();
+      }
+      
+      // Always show dropdown when clicking input
+      this.showDropdown = true;
+    },
+    
+    handleInputChange() {
+      // Ensure dropdown is visible when typing
+      this.showDropdown = true;
+      
+      // Reset highlighted index when search changes
+      this.highlightedIndex = -1;
+    },
+    
+    handleSelectedValueClick() {
+      this.$refs.searchInput.focus();
+      this.searchQuery = '';
+      this.showDropdown = true;
+    },
+    
+    selectHighlighted() {
+      const items = this.displayedItems;
+      
+      if (items.length === 0) return;
+      
+      // If an item is highlighted, select that item
+      if (this.highlightedIndex >= 0 && this.highlightedIndex < items.length) {
+        this.selectItem(items[this.highlightedIndex]);
+      } 
+      // Otherwise, select the best match (first item in results)
+      else if (items.length > 0) {
+        this.selectItem(items[0]);
+      }
     },
     
     navigateDown() {
       this.isKeyboardNavigation = true;
+      const items = this.displayedItems;
       
-      if (this.filteredItems.length === 0) {
-        return;
-      }
+      if (items.length === 0) return;
       
-      if (this.highlightedIndex < this.filteredItems.length - 1) {
+      if (this.highlightedIndex < items.length - 1) {
         this.highlightedIndex++;
-        this.scrollToHighlighted();
       } else {
-        // Wrap around to the beginning
-        this.highlightedIndex = 0;
-        this.scrollToHighlighted();
+        this.highlightedIndex = 0; // Wrap around
       }
     },
     
     navigateUp() {
       this.isKeyboardNavigation = true;
+      const items = this.displayedItems;
       
-      if (this.filteredItems.length === 0) {
-        return;
-      }
+      if (items.length === 0) return;
       
       if (this.highlightedIndex > 0) {
         this.highlightedIndex--;
-        this.scrollToHighlighted();
       } else {
-        // Wrap around to the end
-        this.highlightedIndex = this.filteredItems.length - 1;
-        this.scrollToHighlighted();
+        this.highlightedIndex = items.length - 1; // Wrap around
       }
-    },
-    
-    selectHighlighted() {
-      if (this.highlightedIndex >= 0 && this.highlightedIndex < this.filteredItems.length) {
-        this.selectItem(this.filteredItems[this.highlightedIndex]);
-        this.$refs.searchInput.blur(); // Remove focus from input after selection
-      }
-    },
-    
-    scrollToHighlighted() {
-      this.$nextTick(() => {
-        if (!this.$refs.resultItems) return;
-        
-        const highlighted = this.$refs.resultItems[this.highlightedIndex];
-        if (highlighted && highlighted.scrollIntoView) {
-          // Scroll the highlighted item into view if needed
-          highlighted.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-        }
-      });
     },
     
     clearSearch() {
       this.searchQuery = '';
+      this.showDropdown = false;
       this.$refs.searchInput.blur();
     },
     
+    clearSelection() {
+      this.selectedValue = '';
+      this.searchQuery = '';
+      this.$emit('input', '');
+      this.$emit('item-selected', null);
+      this.$refs.searchInput.focus();
+      this.showDropdown = true;
+    },
+    
     mouseleaveHandler() {
-      // Only clear highlight if not using keyboard navigation
       if (!this.isKeyboardNavigation) {
         this.highlightedIndex = -1;
       }
     },
     
+    selectItem(item) {
+      // Clear any pending blur timer
+      if (this.blurTimer) {
+        clearTimeout(this.blurTimer);
+        this.blurTimer = null;
+      }
+      
+      this.selectedValue = item.value;
+      this.searchQuery = item.text; // Set input value to selected item's text
+      this.highlightedIndex = -1;
+      this.isKeyboardNavigation = false;
+      this.isFocused = false;
+      this.showDropdown = false;
+      this.$emit('input', item.value);
+      this.$emit('item-selected', item);
+      
+      // After selecting, blur the input
+      this.$refs.searchInput.blur();
+    },
+    
+    // Method to highlight search query in text
     highlightMatches(text) {
       if (!this.searchQuery || this.searchQuery.length < 2) {
         return text;
       }
       
       try {
-        // Find the corresponding search result for this text using the computed property
-        const result = this.searchResults.find(r => r.item.text === text);
-        
-        if (!result || !result.matches || !result.matches.length) {
-          return text;
-        }
-        
-        // Get matches for the 'text' key
-        const match = result.matches.find(m => m.key === 'text');
-        
-        if (!match || !match.indices || !match.indices.length) {
-          return text;
-        }
-        
-        // Sort indices to process from end to start to avoid offset issues
-        const indices = [...match.indices].sort((a, b) => b[0] - a[0]);
-        
-        let highlighted = text;
-        
-        // Replace each matched substring with a highlighted version
-        indices.forEach(([start, end]) => {
-          const matchedText = text.substring(start, end + 1);
-          highlighted = highlighted.substring(0, start) + 
-                      `<span class="fuzzy-search__highlight">${matchedText}</span>` + 
-                      highlighted.substring(end + 1);
-        });
-        
-        return highlighted;
+        // Simple highlight implementation
+        const regex = new RegExp(this.searchQuery.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi');
+        return text.replace(regex, match => `<span class="fuzzy-search__highlight">${match}</span>`);
       } catch (error) {
-        console.error('Error highlighting matches:', error);
         return text;
       }
-    },
-    
-    selectItem(item) {
-      this.selectedValue = item.value;
-      this.searchQuery = '';
-      this.highlightedIndex = -1;
-      this.isKeyboardNavigation = false;
-      this.$emit('item-selected', item);
     }
   }
 };

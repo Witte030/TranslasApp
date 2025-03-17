@@ -5,22 +5,22 @@
 .create-card {
   max-width: 800px;
   margin: 0 auto;
-  padding: var(--spacing-xl);
+  padding: $spacing-xl;
   
   // Element: create-card__title
   &__title {
     text-align: center;
-    color: var(--color-gray-dark);
-    margin-bottom: var(--spacing-xl);
+    color: $color-gray-dark;
+    margin-bottom: $spacing-xl;
   }
   
   // Element: create-card__section-title
   &__section-title {
-    color: var(--color-gray);
+    color: $color-gray;
     font-size: 1.2rem;
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 8px;
-    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid $color-border;
+    padding-bottom: $spacing-sm;
+    margin-bottom: $spacing-md;
   }
   
   // Element: create-card__form
@@ -29,9 +29,9 @@
     flex-direction: column;
     background-color: white;
     padding: 25px;
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-md);
-    margin-bottom: var(--spacing-xl);
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-md;
+    margin-bottom: $spacing-xl;
   }
   
   // Element: create-card__section
@@ -42,10 +42,10 @@
   // Element: create-card__row
   &__row {
     display: flex;
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-md);
+    gap: $spacing-lg;
+    margin-bottom: $spacing-md;
     
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       flex-direction: column;
       gap: 0;
     }
@@ -54,16 +54,16 @@
   // Element: create-card__form-group
   &__form-group {
     flex: 1;
-    margin-bottom: var(--spacing-md);
+    margin-bottom: $spacing-md;
     position: relative;
   }
   
   // Element: create-card__label
   &__label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: var(--font-weight-medium);
-    color: var(--color-gray-dark);
+    margin-bottom: $spacing-sm;
+    font-weight: $font-weight-medium;
+    color: $color-gray-dark;
     font-size: 15px;
   }
   
@@ -71,22 +71,22 @@
   &__input {
     width: 100%;
     padding: 12px;
-    font-size: 16px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-sm);
-    background-color: #f9f9f9;
+    font-size: $font-size-lg;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
+    background-color: $color-gray-light;
     transition: all 0.2s ease;
     box-sizing: border-box;
     
     &:focus {
-      border-color: var(--color-primary);
+      border-color: $color-primary;
       background-color: white;
       outline: none;
-      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
     }
     
     &:hover {
-      border-color: var(--color-gray);
+      border-color: $color-gray;
     }
   }
   
@@ -96,33 +96,35 @@
   }
   
   // Element: create-card__select-container
-  &__select-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+&__select-container {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;  // Changed from 10px to use spacing variable
+}
 
-  // Element: create-card__search-container
-  &__search-container {
-    position: relative;
-    width: 100%;
-  }
+// Element: create-card__search-container
+&__search-container {
+  position: relative;
+  width: 100%;
+  flex: 1;  // Add flex: 1 to make sure search takes available space
+}
 
   // Element: create-card__search-input
   &__search-input {
     width: 100%;
-    padding: 8px 12px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-sm);
-    font-size: 14px;
-    margin-bottom: 8px;
-    background-color: #f9f9f9;
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-md;
+    margin-bottom: $spacing-sm;
+    background-color: $color-gray-light;
     transition: all 0.2s ease;
     
     &:focus {
-      border-color: var(--color-primary);
+      border-color: $color-primary;
       background-color: white;
       outline: none;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
     }
   }
   
@@ -133,58 +135,74 @@
     max-height: 200px;
     overflow-y: auto;
     background: white;
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-sm);
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
     z-index: 10;
-    box-shadow: var(--shadow-sm);
+    box-shadow: $shadow-sm;
   }
   
   // Element: create-card__search-result-item
   &__search-result-item {
-    padding: 8px 12px;
+    padding: $spacing-sm $spacing-md;
     cursor: pointer;
-    border-bottom: 1px solid var(--color-border-light);
+    border-bottom: 1px solid $color-border;
     
     &:last-child {
       border-bottom: none;
     }
     
     &:hover {
-      background-color: var(--color-background-light);
+      background-color: $color-gray-light;
     }
   }
   
-  // Element: create-card__add-button
-  &__add-button {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: none;
-    background-color: var(--color-success);
-    color: white;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-    
-    &:hover {
-      background-color: var(--color-success-dark);
-      transform: scale(1.1);
-    }
+ // Element: create-card__add-button
+&__add-button {
+  width: 36px;
+  height: 36px;
+  border-radius: $border-radius-sm;
+  border: none;
+  background-color: $color-success-dark;  // Changed to success-dark
+  color: white;
+  font-size: 18px;
+  font-weight: $font-weight-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  margin-left: $spacing-sm;  // Add margin to prevent overlap
+  position: relative;  // Add position relative
+  z-index: 1;  // Add z-index to ensure it's above other elements
+  
+  &:hover {
+    background-color: darken($color-success-dark, 5%);  // Slightly darken on hover
+    transform: translateY(-2px);
+    box-shadow: $shadow-sm;
   }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($color-success-dark, 0.3);  // Match focus to button color
+  }
+}
   
   // Element: create-card__inline-modal
   &__inline-modal {
     margin-top: 10px;
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius-sm);
-    background-color: #f9f9f9;
-    border: 1px solid var(--color-border);
+    padding: $spacing-md;
+    border-radius: $border-radius-sm;
+    background-color: $color-gray-light;
+    border: 1px solid $color-border;
     margin-bottom: 10px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: $shadow-sm;
   }
   
   // Element: create-card__submit
@@ -192,22 +210,22 @@
     align-self: center;
     padding: 14px 30px;
     margin-top: 10px;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
     border: none;
     border-radius: 30px;
-    background-color: var(--color-success);
+    background-color: $color-success;
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: var(--shadow-sm);
+    box-shadow: $shadow-sm;
     width: auto;
     min-width: 200px;
     
     &:hover {
-      background-color: var(--color-success-dark);
+      background-color: $color-success-dark;
       transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      box-shadow: $shadow-md;
     }
     
     &:active {
@@ -224,23 +242,23 @@
   
   // Element: create-card__message
   &__message {
-    margin-top: var(--spacing-lg);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius-sm);
+    margin-top: $spacing-lg;
+    padding: $spacing-md;
+    border-radius: $border-radius-sm;
     text-align: center;
     
     // Modifier: create-card__message--success
     &--success {
-      background-color: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
+      background-color: lighten($color-success, 45%);
+      color: darken($color-success, 20%);
+      border: 1px solid lighten($color-success, 35%);
     }
     
     // Modifier: create-card__message--error
     &--error {
-      background-color: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
+      background-color: lighten($color-danger, 45%);
+      color: darken($color-danger, 10%);
+      border: 1px solid lighten($color-danger, 35%);
     }
   }
 }
