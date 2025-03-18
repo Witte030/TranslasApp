@@ -1,8 +1,9 @@
+@use 'sass:color';
 @use '../abstracts' as *;
 
 // Block: card
 .card {
-  background-color: white;
+  background-color: $color-white;
   border-radius: $border-radius-md;
   box-shadow: $shadow-md;
   overflow: hidden;
@@ -63,7 +64,7 @@
     
     // Modifier: card__status--handled
     &--handled {
-      @include badge($color-success, white);
+      @include badge($color-success, $color-white);
     }
   }
   
@@ -76,7 +77,7 @@
     
     // Modifier: card__priority-badge--high
     &--high {
-      @include badge($color-danger, white);
+      @include badge($color-danger, $color-white);
     }
     
     // Modifier: card__priority-badge--medium
@@ -86,7 +87,7 @@
     
     // Modifier: card__priority-badge--low
     &--low {
-      @include badge($color-gray, white);
+      @include badge($color-gray, $color-white);
     }
   }
   
@@ -180,17 +181,17 @@
     
     // Modifier: card__button--mark-handled
     &--mark-handled {
-      @include button($color-success, white, $color-success-dark);
+      @include button($color-success, $color-white, $color-success-dark);
     }
     
     // Modifier: card__button--handled
     &--handled {
-      @include button($color-info, white, $color-info-dark);
+      @include button($color-info, $color-white, $color-info-dark);
     }
     
     // Modifier: card__button--view
     &--view {
-      @include button($color-primary, white, $color-primary-dark);
+      @include button($color-primary, $color-white, $color-primary-dark);
     }
   }
 }

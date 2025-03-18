@@ -1,21 +1,15 @@
 @use 'sass:color';
 @use 'variables' as *;
 
-// Flexbox mixins
+// Flex mixins
 @mixin flex($direction: row, $justify: flex-start, $align: stretch, $gap: 0) {
   display: flex;
   flex-direction: $direction;
   justify-content: $justify;
   align-items: $align;
-  @if $gap > 0 {
+  @if $gap != 0 {
     gap: $gap;
   }
-}
-
-@mixin flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 @mixin flex-between {
@@ -24,18 +18,63 @@
   align-items: center;
 }
 
-// Button mixins
-@mixin button($bg-color, $text-color, $hover-color) {
-  background-color: $bg-color;
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin grid($columns: 1fr, $rows: auto, $gap: 0) {
+  display: grid;
+  grid-template-columns: $columns;
+  grid-template-rows: $rows;
+  @if $gap != 0 {
+    gap: $gap;
+  }
+}
+
+// Badge mixin
+@mixin badge($background-color, $text-color) {
+  background-color: $background-color;
+  color: $text-color;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  display: inline-block;
+}
+
+// Button mixin
+@mixin button($background-color, $text-color, $hover-color, $with-shadow: false) {
+  background-color: $background-color;
   color: $text-color;
   border: none;
-  border-radius: var(--border-radius-sm, 4px);
+  border-radius: $border-radius-sm;
+  padding: $spacing-sm $spacing-md;
   cursor: pointer;
-  font-weight: var(--font-weight-medium, 500);
-  transition: background-color 0.2s;
+  font-weight: $font-weight-medium;
+  text-align: center;
+  transition: all 0.2s ease;
+  
+  @if $with-shadow {
+    box-shadow: 0 2px 4px rgba($color-black, 0.15);
+  }
   
   &:hover:not(:disabled) {
     background-color: $hover-color;
+    
+    @if $with-shadow {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba($color-black, 0.2);
+    }
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+    
+    @if $with-shadow {
+      box-shadow: 0 1px 2px rgba($color-black, 0.15);
+    }
   }
   
   &:disabled {
@@ -44,12 +83,195 @@
   }
 }
 
-// Badge mixins
-@mixin badge($bg-color, $text-color) {
-  background-color: $bg-color;
-  color: $text-color;
-  padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px);
-  border-radius: var(--border-radius-lg, 12px);
-  font-size: var(--font-size-sm, 12px);
-  font-weight: var(--font-weight-medium, 500);
+// Add a specific button style for form actions
+@mixin form-button($type: 'primary') {
+  padding: $spacing-sm $spacing-lg;
+  min-width: 120px;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  border: none;
+  border-radius: $border-radius-sm;
+  transition: all 0.3s ease;
+  
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  @if $type == 'primary' {
+    background-color: $color-primary;
+    color: $color-white;
+    box-shadow: 0 2px 4px rgba($color-primary, 0.3);
+    
+    &:hover:not(:disabled) {
+      background-color: $color-primary-dark;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba($color-primary, 0.4);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba($color-primary, 0.3);
+    }
+  } @else if $type == 'secondary' {
+    background-color: $color-white;
+    color: $color-gray-dark;
+    border: 1px solid $color-border;
+    
+    &:hover:not(:disabled) {
+      background-color: $color-gray-light;
+      color: $color-gray-darker;
+    }
+    
+    &:active:not(:disabled) {
+      background-color: color.adjust($color-gray-light, $lightness: -5%);
+      transform: translateY(1px);
+    }
+  } @else if $type == 'success' {
+    background-color: $color-success;
+    color: $color-white;
+    box-shadow: 0 2px 4px rgba($color-success, 0.3);
+    
+    &:hover:not(:disabled) {
+      background-color: $color-success-dark;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba($color-success, 0.4);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba($color-success, 0.3);
+    }
+  } @else if $type == 'danger' {
+    background-color: $color-danger;
+    color: $color-white;
+    box-shadow: 0 2px 4px rgba($color-danger, 0.3);
+    
+    &:hover:not(:disabled) {
+      background-color: $color-danger-dark;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba($color-danger, 0.4);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba($color-danger, 0.3);
+    }
+  }
+}
+
+// Improved button mixins (for future use)
+@mixin button-base {
+  display: inline-block;
+  padding: $spacing-sm $spacing-md;
+  border: none;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  font-weight: $font-weight-medium;
+  text-align: center;
+  transition: background-color 0.2s, transform 0.1s;
+  
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+}
+
+@mixin button-primary {
+  @include button-base;
+  background-color: $color-primary;
+  color: $color-white;
+  
+  &:hover:not(:disabled) {
+    background-color: $color-primary-dark;
+  }
+}
+
+@mixin button-secondary {
+  @include button-base;
+  background-color: $color-gray-light;
+  color: $color-gray-dark;
+  
+  &:hover:not(:disabled) {
+    background-color: color.adjust($color-gray-light, $lightness: -5%);
+  }
+}
+
+@mixin button-success {
+  @include button-base;
+  background-color: $color-success;
+  color: $color-white;
+  
+  &:hover:not(:disabled) {
+    background-color: $color-success-dark;
+  }
+}
+
+// Message/alert styles
+@mixin message-base {
+  padding: $spacing-md;
+  border-radius: $border-radius-sm;
+  margin: $spacing-md 0;
+  border-width: $border-width;
+  border-style: solid;
+}
+
+@mixin message-success {
+  @include message-base;
+  background-color: color.scale($color-success, $lightness: 75%);
+  color: color.scale($color-success, $lightness: -35%);
+  border-color: color.scale($color-success, $lightness: 60%);
+}
+
+@mixin message-error {
+  @include message-base;
+  background-color: color.scale($color-danger, $lightness: 75%);
+  color: color.scale($color-danger, $lightness: -20%);
+  border-color: color.scale($color-danger, $lightness: 60%);
+}
+
+// Layout helper mixins
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin truncate($width: 100%) {
+  max-width: $width;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Responsive mixins
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == md {
+    @media (min-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == lg {
+    @media (min-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == xl {
+    @media (min-width: $breakpoint-xl) { @content; }
+  }
+}
+
+// Shadow mixins
+@mixin shadow-sm {
+  box-shadow: $shadow-sm;
+}
+
+@mixin shadow-md {
+  box-shadow: $shadow-md;
+}
+
+@mixin shadow-lg {
+  box-shadow: $shadow-lg;
 }

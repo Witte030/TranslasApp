@@ -12,30 +12,45 @@
   
   // Modifier: button--primary
   &--primary {
-    @include button($color-primary, white, $color-primary-dark);
+    @include button($color-primary, $color-white, $color-primary-dark);
   }
   
   // Modifier: button--success
   &--success {
-    @include button($color-success, white, $color-success-dark);
+    @include button($color-success, $color-white, $color-success-dark);
   }
   
   // Modifier: button--info
   &--info {
-    @include button($color-info, white, $color-info-dark);
+    @include button($color-info, $color-white, $color-info-dark);
   }
   
   // Modifier: button--warning
   &--warning {
-    // Replace darken() with color.adjust()
     @include button($color-warning, $color-gray-dark, color.adjust($color-warning, $lightness: -5%));
+  }
+  
+  // Modifier: button--danger
+  &--danger {
+    @include button($color-danger, $color-white, $color-danger-dark);
+  }
+  
+  // Modifier: button--secondary
+  &--secondary {
+    @include button($color-gray-light, $color-gray-dark, color.adjust($color-gray-light, $lightness: -5%));
+  }
+  
+  // Disabled state
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 }
 
 // Block: refresh-btn
 .refresh-btn {
   padding: $spacing-sm $spacing-lg;
-  @include button($color-success, white, $color-success-dark);
+  @include button($color-success, $color-white, $color-success-dark);
   @include flex(row, center, center, $spacing-xs);
 }
 
@@ -44,6 +59,22 @@
   display: inline-block;
   margin-top: $spacing-lg;
   padding: $spacing-md $spacing-xl;
-  @include button($color-primary, white, $color-primary-dark);
+  @include button($color-primary, $color-white, $color-primary-dark);
   text-decoration: none;
+}
+
+// Block: action-btn (for common action buttons)
+.action-btn {
+  padding: $spacing-sm $spacing-md;
+  font-size: $font-size-sm;
+  
+  // Modifier: action-btn--edit
+  &--edit {
+    @include button($color-primary-light, $color-primary-dark, color.adjust($color-primary-light, $lightness: -5%));
+  }
+  
+  // Modifier: action-btn--delete
+  &--delete {
+    @include button($color-danger-light, $color-danger-dark, color.adjust($color-danger-light, $lightness: -5%));
+  }
 }

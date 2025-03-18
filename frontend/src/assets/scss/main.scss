@@ -1,8 +1,14 @@
- // Import base styles
+@use 'sass:color';
+
+// Import abstracts (variables, mixins, etc)
+@use 'abstracts';
+
+// Import base styles (reset, typography, etc)
 @use 'base';
 
-// Import layout components
+// Import component styles
+@use 'components';
+
 @use 'layouts';
 
-// Import UI components
-@use 'components';
+

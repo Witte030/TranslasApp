@@ -1,0 +1,76 @@
+@use 'sass:color';
+
+// Primary Colors
+$color-primary: #007bff;
+$color-primary-dark: color.scale($color-primary, $lightness: -20%);
+$color-primary-light: color.scale($color-primary, $lightness: 40%);
+
+// Secondary/Neutral Colors
+$color-secondary: #6c757d;
+$color-secondary-dark: color.scale($color-secondary, $lightness: -20%);
+$color-secondary-light: color.scale($color-secondary, $lightness: 40%);
+
+// Feedback Colors
+$color-success: #28a745;
+$color-success-dark: color.scale($color-success, $lightness: -20%);
+$color-success-light: color.scale($color-success, $lightness: 40%);
+
+$color-danger: #dc3545;
+$color-danger-dark: color.scale($color-danger, $lightness: -20%);
+$color-danger-light: color.scale($color-danger, $lightness: 40%);
+
+$color-warning: #ffc107;
+$color-warning-dark: color.scale($color-warning, $lightness: -20%);
+$color-warning-light: color.scale($color-warning, $lightness: 40%);
+
+$color-info: #17a2b8;
+$color-info-dark: color.scale($color-info, $lightness: -20%);
+$color-info-light: color.scale($color-info, $lightness: 40%);
+
+// Grayscale
+$color-white: #ffffff;
+$color-gray-lighter: #f8f9fa;
+$color-gray-light: #e9ecef;
+$color-gray: #ced4da;
+$color-gray-dark: #495057;
+$color-gray-darker: #343a40;
+$color-black: #000000;
+
+// Semantic Colors
+$color-text: $color-gray-darker;
+$color-text-light: $color-gray-dark;
+$color-text-muted: $color-gray;
+$color-border: $color-gray-light;
+$color-background: $color-white;
+$color-background-light: $color-gray-lighter;
+
+// UI State Colors
+$color-hover-overlay: rgba($color-black, 0.05);
+$color-focus-ring: rgba($color-primary, 0.25);
+$color-disabled: $color-gray-light;
+
+// Message Colors (for alerts, notifications)
+$color-success-bg: color.scale($color-success, $lightness: 75%);
+$color-success-border: color.scale($color-success, $lightness: 60%);
+$color-success-text: color.scale($color-success, $lightness: -35%);
+
+$color-danger-bg: color.scale($color-danger, $lightness: 75%);
+$color-danger-border: color.scale($color-danger, $lightness: 60%);
+$color-danger-text: color.scale($color-danger, $lightness: -20%);
+
+$color-warning-bg: color.scale($color-warning, $lightness: 75%);
+$color-warning-border: color.scale($color-warning, $lightness: 60%);
+$color-warning-text: color.scale($color-warning, $lightness: -35%);
+
+$color-info-bg: color.scale($color-info, $lightness: 75%);
+$color-info-border: color.scale($color-info, $lightness: 60%);
+$color-info-text: color.scale($color-info, $lightness: -35%);
+
+// Helper Functions
+@function get-hover-color($base-color) {
+  @return color.scale($base-color, $lightness: -10%);
+}
+
+@function get-active-color($base-color) {
+  @return color.scale($base-color, $lightness: -15%);
+}

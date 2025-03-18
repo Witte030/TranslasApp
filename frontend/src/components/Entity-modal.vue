@@ -32,6 +32,7 @@
           :disabled="loading || !entityData.name"
         >
           {{ loading ? loadingText : submitText }}
+          {{ $t('common.submit') }}
         </button>
       </div>
       
@@ -50,10 +51,11 @@
 </template>
 
 <script>
+import { getEntityService } from '@/services/api/entityService';
+
 export default {
   name: 'EntityModal',
   props: {
-    // Type of entity (receiver, supplier, carrier)
     entityType: {
       type: String,
       required: true,
@@ -63,7 +65,7 @@ export default {
   data() {
     return {
       entityData: {
-        name: ''  // Initialize with empty string instead of undefined
+        name: ''
       },
       loading: false,
       message: '',
@@ -71,20 +73,11 @@ export default {
     };
   },
   computed: {
-    title() {
-      return this.$t(`forms.${this.entityType}.title`);
-    },
-    labelText() {
-      return this.$t(`forms.${this.entityType}.name`);
-    },
-    submitText() {
-      return this.$t(`forms.${this.entityType}.add`);
-    },
-    loadingText() {
-      return this.$t(`forms.${this.entityType}.adding`);
-    },
-    emitEvent() {
-      return `${this.entityType}-added`;
+    // Existing computed properties...
+    
+    // Get the appropriate service for this entity type
+    entityService() {
+      return getEntityService(this.entityType);
     }
   },
   mounted() {
@@ -105,22 +98,11 @@ export default {
       this.message = '';
 
       try {
-        const response = await fetch(`/api/${this.entityType}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name: this.entityData.name
-          })
+        // Use the entity service instead of direct fetch
+        const data = await this.entityService.create({ 
+          name: this.entityData.name 
         });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || 'Unknown error occurred');
-        }
-
+        
         // Show success message
         this.message = this.$t(`forms.${this.entityType}.success`);
         this.isSuccess = true;
@@ -144,8 +126,10 @@ export default {
     }
   }
 };
+
 </script>
-  
-  <style lang="scss">
-  @use '@/assets/scss/main';
-  </style>
+
+<style scoped lang="scss">
+@use '@/assets/scss/abstracts' as *;
+@use '@/assets/scss/components/_entity-modal';
+</style>

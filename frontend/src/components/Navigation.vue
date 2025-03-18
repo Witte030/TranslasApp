@@ -142,6 +142,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@use "@/assets/scss/main";
+<style lang="scss" scoped>
+@use "@/assets/scss/abstracts" as *;
+@use "@/assets/scss/components/_navigation";
 </style>

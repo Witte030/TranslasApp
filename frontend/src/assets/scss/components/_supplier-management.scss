@@ -80,7 +80,7 @@
     }
     
     &:hover {
-      background-color: darken($color-gray-light, 5%);
+      background-color: color.adjust($color-gray-light, $lightness: -5%);
     }
     
     &:active {
@@ -121,7 +121,7 @@
     transition: background-color 0.2s;
     
     &:hover {
-      background-color: darken($color-primary, 10%);
+      background-color: color.adjust($color-primary, $lightness: -10%);
     }
   }
   
@@ -235,59 +235,31 @@
   
   // Element: supplier-management__edit-button
   &__edit-button {
+    @include button-secondary;
     background-color: $color-primary-light;
     color: $color-primary-dark;
-    
-    &:hover {
-      background-color: darken($color-primary-light, 5%);
-    }
   }
   
-  // Element: supplier-management__save-button
   &__save-button {
-    background-color: $color-success;
-    color: $color-white;
-    
-    &:hover:not(:disabled) {
-      background-color: darken($color-success, 5%);
-    }
-    
-    &:disabled {
-      background-color: $color-gray;
-      cursor: not-allowed;
-    }
+    @include button-success;
   }
   
-  // Element: supplier-management__cancel-button
   &__cancel-button {
-    background-color: $color-gray-light;
-    color: $color-gray-dark;
-    
-    &:hover {
-      background-color: darken($color-gray-light, 5%);
-    }
+    @include button-secondary;
   }
   
   // Element: supplier-management__message with modifiers
   &__message {
     margin-top: $spacing-xl;
-    padding: $spacing-md;
-    border-radius: $border-radius-sm;
-    text-align: center;
     animation: fadeIn 0.3s ease-in-out;
+    text-align: center;
     
-    // Modifier: supplier-management__message--success
     &--success {
-      background-color: lighten($color-success, 45%);
-      color: darken($color-success, 20%);
-      border: 1px solid lighten($color-success, 35%);
+      @include message-success;
     }
     
-    // Modifier: supplier-management__message--error
     &--error {
-      background-color: lighten($color-danger, 45%);
-      color: darken($color-danger, 10%);
-      border: 1px solid lighten($color-danger, 35%);
+      @include message-error;
     }
   }
 }

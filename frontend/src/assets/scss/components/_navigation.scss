@@ -3,36 +3,26 @@
 
 // Block: nav
 .nav {
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: $color-white;
+  box-shadow: $shadow-sm;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: $z-index-sticky;
   
-  &__language-label {
-    display: none; // Hide by default on desktop
-    margin-right: 0.5rem;
-    font-weight: $font-weight-medium;
-    
-    @media (max-width: $breakpoint-md) {
-      display: inline; // Show only on mobile
-    }
-  }
-
   // Element: nav__container
   &__container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: $spacing-md;
     max-width: $breakpoint-xl;
     margin: 0 auto;
   }
   
   // Element: nav__logo
   &__logo {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
     color: $color-primary;
     text-decoration: none;
     display: flex;
@@ -49,11 +39,11 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: $spacing-sm;
     
     @media (max-width: $breakpoint-md) {
       display: block;
-      z-index: 101;
+      z-index: $z-index-fixed;
     }
   }
   
@@ -64,7 +54,7 @@
     width: 24px;
     height: 2px;
     background-color: $color-primary;
-    transition: background-color 0.3s;
+    transition: background-color $transition-speed $transition-timing;
     
     &:before,
     &:after {
@@ -73,7 +63,7 @@
       width: 100%;
       height: 100%;
       background-color: $color-primary;
-      transition: transform 0.3s;
+      transition: transform $transition-speed $transition-timing;
     }
     
     &:before {
@@ -84,7 +74,6 @@
       transform: translateY(8px);
     }
     
-    // Modifier: nav__toggle[aria-expanded="true"] .nav__toggle-icon
     .nav__toggle[aria-expanded="true"] & {
       background-color: transparent;
       
@@ -103,20 +92,18 @@
     @media (max-width: $breakpoint-md) {
       position: fixed;
       top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background-color: white;
-      padding: 4rem 1.5rem;
-      transform: translateX(-100%);
-      transition: transform 0.3s ease-in-out;
-      z-index: 100;
-      visibility: hidden;
+      right: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: 100vh;
+      background-color: $color-white;
+      box-shadow: $shadow-lg;
+      transition: right $transition-speed $transition-timing;
+      padding-top: $spacing-xxl;
+      overflow-y: auto;
       
-      // Modifier: nav__menu--open
       &--open {
-        transform: translateX(0);
-        visibility: visible;
+        right: 0;
       }
     }
   }
@@ -124,31 +111,37 @@
   // Element: nav__list
   &__list {
     display: flex;
+    align-items: center;
     list-style: none;
     margin: 0;
     padding: 0;
     
     @media (max-width: $breakpoint-md) {
       flex-direction: column;
+      align-items: flex-start;
+      padding: $spacing-md;
     }
   }
   
   // Element: nav__item
   &__item {
-    margin-left: 1.5rem;
+    margin-left: $spacing-md;
+    position: relative;
     
     @media (max-width: $breakpoint-md) {
-      margin: 0;
-      margin-bottom: 1.5rem;
+      margin-left: 0;
+      margin-bottom: $spacing-md;
+      width: 100%;
     }
     
-    // Modifier: nav__item--language-dropdown
     &--language-dropdown {
-      margin-left: auto; // Push to the right side of the navigation
+      margin-left: $spacing-lg;
       
       @media (max-width: $breakpoint-md) {
         margin-left: 0;
-        margin-top: 0.5rem;
+        margin-top: $spacing-md;
+        border-top: 1px solid $color-gray-light;
+        padding-top: $spacing-md;
       }
     }
   }
@@ -157,47 +150,40 @@
   &__link {
     color: $color-gray-dark;
     text-decoration: none;
-    font-weight: 600;
-    padding: 0.5rem;
-    transition: color 0.2s;
-    position: relative;
+    font-weight: $font-weight-medium;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    transition: color $transition-speed, background-color $transition-speed;
     
     &:hover {
       color: $color-primary;
+      background-color: $color-gray-lighter;
     }
     
-    // Modifier: nav__link.router-link-active
     &.router-link-active {
       color: $color-primary;
-      
-      &:after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 2px;
-        background-color: $color-primary;
-        
-        @media (max-width: $breakpoint-md) {
-          width: 4px;
-          height: 100%;
-          left: -8px;
-          bottom: auto;
-          top: 0;
-        }
-      }
+      font-weight: $font-weight-bold;
     }
     
     @media (max-width: $breakpoint-md) {
       display: block;
-      padding: 0.75rem 0;
-      font-size: 1.25rem;
+      padding: $spacing-sm;
+      width: 100%;
+    }
+  }
+  
+  &__language-label {
+    display: none; // Hide by default on desktop
+    margin-right: $spacing-sm;
+    font-weight: $font-weight-medium;
+    
+    @media (max-width: $breakpoint-md) {
+      display: inline; // Show only on mobile
     }
   }
 }
 
-// Block: language-dropdown (moved from Vue component)
+// Block: language-dropdown
 .language-dropdown {
   position: relative;
   display: inline-block;
@@ -207,13 +193,13 @@
     display: flex;
     align-items: center;
     background: transparent;
-    border: 1px solid $color-gray-light;
-    border-radius: 4px;
-    padding: 0.5rem 0.75rem;
+    border: $border-width solid $color-border;
+    border-radius: $border-radius-sm;
+    padding: $spacing-xs $spacing-sm;
     cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 0.875rem;
-    font-weight: $font-weight-semibold;
+    transition: all $transition-speed $transition-timing;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
     
     &:hover {
       background-color: $color-gray-lighter;
@@ -231,11 +217,11 @@
     display: inline-block;
     width: 0;
     height: 0;
-    margin-left: 0.5rem;
+    margin-left: $spacing-xs;
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
-    border-top: 4px solid currentColor;
-    transition: transform 0.2s ease;
+    border-top: 4px solid $color-gray-dark;
+    transition: transform $transition-speed $transition-timing;
     
     .language-dropdown__toggle--active & {
       transform: rotate(180deg);
@@ -247,20 +233,21 @@
     position: absolute;
     top: 100%;
     right: 0;
-    width: 150px;
+    margin-top: $spacing-xs;
     background-color: $color-white;
-    border: 1px solid $color-gray-light;
-    border-radius: 4px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 0.25rem;
-    z-index: 100;
-    overflow: hidden;
+    border: $border-width solid $color-border;
+    border-radius: $border-radius-sm;
+    box-shadow: $shadow-md;
+    z-index: $z-index-dropdown;
+    min-width: 120px;
     
     @media (max-width: $breakpoint-md) {
       position: static;
-      width: 100%;
-      margin-top: 0.5rem;
       box-shadow: none;
+      border: none;
+      margin-top: $spacing-sm;
+      background-color: $color-gray-lighter;
+      border-radius: $border-radius-md;
     }
   }
   
@@ -268,12 +255,14 @@
   &__item {
     display: block;
     width: 100%;
-    padding: 0.5rem 0.75rem;
+    padding: $spacing-xs $spacing-sm;
     text-align: left;
-    background: transparent;
     border: none;
+    background-color: transparent;
+    font-size: $font-size-sm;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    color: $color-gray-dark;
+    transition: background-color $transition-speed;
     
     &:hover {
       background-color: $color-gray-lighter;
@@ -281,8 +270,12 @@
     
     // Modifier: language-dropdown__item--active
     &--active {
-      background-color: $color-primary-light;
-      color: $color-primary-dark;
+      font-weight: $font-weight-bold;
+      color: $color-primary;
+    }
+    
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-sm;
     }
   }
 }

@@ -228,3 +228,46 @@ Conclusion
 Moving to a Domain-Driven Design architecture is a significant investment that pays off in maintainability and flexibility. By following this incremental approach, you can gradually transform your application while continuing to deliver value to users.
 
 Remember, the goal is not to implement a perfect architecture all at once, but to continuously improve your codebase in a direction that supports your business needs and development workflow.
+
+====================================================================================================
+
+# Color Function Fixes
+
+## Replace all instances of lighten() and darken() with color.adjust():
+
+1. Search across all SCSS files for:
+   - `lighten($color-*, ` → `color.scale($color-*, $lightness: `
+   - `darken($color-*, ` → `color.scale($color-*, $lightness: -`
+
+2. For specific percentage conversions:
+   - `lighten($color, 5%)` → `color.scale($color, $lightness: 10%)`
+   - `lighten($color, 10%)` → `color.scale($color, $lightness: 20%)`
+   - `lighten($color, 20%)` → `color.scale($color, $lightness: 35%)`
+   - `lighten($color, 40%)` → `color.scale($color, $lightness: 67%)`
+   - `lighten($color, 45%)` → `color.scale($color, $lightness: 75%)`
+   - `darken($color, 5%)` → `color.scale($color, $lightness: -10%)`
+   - `darken($color, 10%)` → `color.scale($color, $lightness: -20%)`
+   - `darken($color, 20%)` → `color.scale($color, $lightness: -35%)`
+
+The `color.scale()` function is more intuitive than `color.adjust()` for percentage-based scaling.
+
+# Color Consistency ToDo List
+
+## High Priority
+- [x] Update _supplier-management.scss to use color.scale() instead of lighten()/darken()
+- [ ] Create a color-system.scss file as a single source of truth for colors
+- [ ] Update _variables.scss to extend or import from color-system.scss
+- [ ] Fix _home.scss and _language-switcher.scss to use Sass variables instead of CSS variables
+- [ ] Create component-specific mixins for common styles
+
+## Medium Priority
+- [ ] Update all button hover states to use a consistent darkening amount
+- [ ] Standardize message/alert styles across components
+- [ ] Ensure form element styles are consistent (inputs, selects, textareas)
+- [ ] Implement consistent focus states across interactive elements
+
+## Low Priority
+- [ ] Create a color palette documentation page for developers
+- [ ] Add accessibility checks to ensure color contrast ratios meet WCAG standards
+- [ ] Optimize color variables with CSS custom properties for runtime theming
+- [ ] Consider implementing a dark mode theme
