@@ -1,40 +1,46 @@
 <template>
   <div class="language-switcher">
     <button 
-      @click="switchLanguage('en')" 
-      class="language-switcher__button language-switcher__button--en"
-      :class="{ 'language-switcher__button--active': currentLocale === 'en' }"
-    >
-      <span>English</span>
+      @click="switchLanguage('nl')"
+      :class="{ 'language-switcher__button--active': currentLocale === 'nl' }"
+      class="language-switcher__button">
+      NL
     </button>
     <button 
-      @click="switchLanguage('nl')" 
-      class="language-switcher__button language-switcher__button--nl"
-      :class="{ 'language-switcher__button--active': currentLocale === 'nl' }"
-    >
-      <span>Nederlands</span>
+      @click="switchLanguage('en')"
+      :class="{ 'language-switcher__button--active': currentLocale === 'en' }"
+      class="language-switcher__button">
+      EN
     </button>
   </div>
 </template>
 
 <script>
-import { setLocaleInStorage } from '../i18n'
+import { setLocaleInStorage, getLocale } from '../i18n';
 
 export default {
   name: 'LanguageSwitcher',
-  computed: {
-    currentLocale() {
-      return this.$i18n.locale
-    }
+  
+  data() {
+    return {
+      currentLocale: getLocale() || 'nl'
+    };
   },
+
   methods: {
     switchLanguage(locale) {
-      this.$i18n.locale = locale
-      setLocaleInStorage(locale)
-      document.documentElement.lang = locale
+      try {
+        // Update the locale in storage and i18n instance
+        setLocaleInStorage(locale);
+        // Update our component's state
+        this.currentLocale = locale;
+        console.log(`Language switched to: ${locale}`);
+      } catch (error) {
+        console.error('Error switching language:', error);
+      }
     }
   }
-}
+};
 </script>
 
 <style lang="scss">

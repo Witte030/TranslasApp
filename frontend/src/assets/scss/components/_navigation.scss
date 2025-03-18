@@ -1,0 +1,288 @@
+@use 'sass:color';
+@use '../abstracts' as *;
+
+// Block: nav
+.nav {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  
+  &__language-label {
+    display: none; // Hide by default on desktop
+    margin-right: 0.5rem;
+    font-weight: $font-weight-medium;
+    
+    @media (max-width: $breakpoint-md) {
+      display: inline; // Show only on mobile
+    }
+  }
+
+  // Element: nav__container
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    max-width: $breakpoint-xl;
+    margin: 0 auto;
+  }
+  
+  // Element: nav__logo
+  &__logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $color-primary;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    
+    &:hover {
+      color: $color-primary-dark;
+    }
+  }
+
+  // Element: nav__toggle
+  &__toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    
+    @media (max-width: $breakpoint-md) {
+      display: block;
+      z-index: 101;
+    }
+  }
+  
+  // Element: nav__toggle-icon
+  &__toggle-icon {
+    display: block;
+    position: relative;
+    width: 24px;
+    height: 2px;
+    background-color: $color-primary;
+    transition: background-color 0.3s;
+    
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: $color-primary;
+      transition: transform 0.3s;
+    }
+    
+    &:before {
+      transform: translateY(-8px);
+    }
+    
+    &:after {
+      transform: translateY(8px);
+    }
+    
+    // Modifier: nav__toggle[aria-expanded="true"] .nav__toggle-icon
+    .nav__toggle[aria-expanded="true"] & {
+      background-color: transparent;
+      
+      &:before {
+        transform: rotate(45deg);
+      }
+      
+      &:after {
+        transform: rotate(-45deg);
+      }
+    }
+  }
+  
+  // Element: nav__menu
+  &__menu {
+    @media (max-width: $breakpoint-md) {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: white;
+      padding: 4rem 1.5rem;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+      z-index: 100;
+      visibility: hidden;
+      
+      // Modifier: nav__menu--open
+      &--open {
+        transform: translateX(0);
+        visibility: visible;
+      }
+    }
+  }
+  
+  // Element: nav__list
+  &__list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    
+    @media (max-width: $breakpoint-md) {
+      flex-direction: column;
+    }
+  }
+  
+  // Element: nav__item
+  &__item {
+    margin-left: 1.5rem;
+    
+    @media (max-width: $breakpoint-md) {
+      margin: 0;
+      margin-bottom: 1.5rem;
+    }
+    
+    // Modifier: nav__item--language-dropdown
+    &--language-dropdown {
+      margin-left: auto; // Push to the right side of the navigation
+      
+      @media (max-width: $breakpoint-md) {
+        margin-left: 0;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+  
+  // Element: nav__link
+  &__link {
+    color: $color-gray-dark;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem;
+    transition: color 0.2s;
+    position: relative;
+    
+    &:hover {
+      color: $color-primary;
+    }
+    
+    // Modifier: nav__link.router-link-active
+    &.router-link-active {
+      color: $color-primary;
+      
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background-color: $color-primary;
+        
+        @media (max-width: $breakpoint-md) {
+          width: 4px;
+          height: 100%;
+          left: -8px;
+          bottom: auto;
+          top: 0;
+        }
+      }
+    }
+    
+    @media (max-width: $breakpoint-md) {
+      display: block;
+      padding: 0.75rem 0;
+      font-size: 1.25rem;
+    }
+  }
+}
+
+// Block: language-dropdown (moved from Vue component)
+.language-dropdown {
+  position: relative;
+  display: inline-block;
+  
+  // Element: language-dropdown__toggle
+  &__toggle {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: 1px solid $color-gray-light;
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    font-weight: $font-weight-semibold;
+    
+    &:hover {
+      background-color: $color-gray-lighter;
+    }
+    
+    // Modifier: language-dropdown__toggle--active
+    &--active {
+      background-color: $color-gray-lighter;
+      border-color: $color-primary-light;
+    }
+  }
+  
+  // Element: language-dropdown__arrow
+  &__arrow {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 0.5rem;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid currentColor;
+    transition: transform 0.2s ease;
+    
+    .language-dropdown__toggle--active & {
+      transform: rotate(180deg);
+    }
+  }
+  
+  // Element: language-dropdown__menu
+  &__menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 150px;
+    background-color: $color-white;
+    border: 1px solid $color-gray-light;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 0.25rem;
+    z-index: 100;
+    overflow: hidden;
+    
+    @media (max-width: $breakpoint-md) {
+      position: static;
+      width: 100%;
+      margin-top: 0.5rem;
+      box-shadow: none;
+    }
+  }
+  
+  // Element: language-dropdown__item
+  &__item {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background-color: $color-gray-lighter;
+    }
+    
+    // Modifier: language-dropdown__item--active
+    &--active {
+      background-color: $color-primary-light;
+      color: $color-primary-dark;
+    }
+  }
+}

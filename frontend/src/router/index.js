@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import CreateCard from '../components/CreateCard.vue'
 import CardList from '../components/CardList.vue'
+import SupplierManagement from '../components/SupplierManagement.vue';
 
 const routes = [
   {
@@ -18,12 +19,16 @@ const routes = [
     name: 'CardList',
     component: CardList
   },
-  // Optional route for card details - commented out until implemented
-  // {
-  //   path: '/cards/:id',
-  //   name: 'CardDetail',
-  //   component: () => import('../components/CardDetail.vue')
-  // }
+  {
+    path: '/supplier-management',
+    name: 'SupplierManagement',
+    component: SupplierManagement
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('../components/NotFound.vue') // Create this component
+  }
 ]
 
 const router = createRouter({

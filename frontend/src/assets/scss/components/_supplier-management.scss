@@ -1,0 +1,184 @@
+@use 'sass:color';
+@use '../abstracts' as *;
+
+// Block: supplier-management
+.supplier-management {
+  max-width: $breakpoint-xl;
+  margin: 0 auto;
+  padding: $spacing-xxl $spacing-xl;
+  
+  // Element: supplier-management__title
+  &__title {
+    font-size: $font-size-xxxl;
+    margin-bottom: $spacing-xxl;
+    color: $color-primary;
+    text-align: center;
+  }
+  
+  // Element: supplier-management__list-container
+  &__list-container {
+    margin-bottom: $spacing-xxl;
+  }
+  
+  // Element: supplier-management__table
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: $spacing-lg;
+    
+    th, td {
+      padding: $spacing-lg;
+      text-align: left;
+      border-bottom: $border-width solid $color-gray-light;
+    }
+    
+    th {
+      background-color: $color-gray-lighter;
+      font-weight: $font-weight-bold;
+    }
+  }
+  
+  // Element: supplier-management__row with modifier
+  &__row {
+    &--editing {
+      background-color: rgba($color-primary-light, 0.1);
+    }
+  }
+  
+  // Element: supplier-management__priority with modifiers
+  &__priority {
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    font-weight: $font-weight-medium;
+    display: inline-block;
+    
+    // Modifier: supplier-management__priority--low
+    &--low {
+      background-color: $color-success-light;
+      color: $color-success-dark;
+    }
+    
+    // Modifier: supplier-management__priority--medium
+    &--medium {
+      background-color: $color-warning-light;
+      color: $color-warning-dark;
+    }
+    
+    // Modifier: supplier-management__priority--high
+    &--high {
+      background-color: $color-danger-light;
+      color: $color-danger-dark;
+    }
+  }
+  
+  // Element: supplier-management__select
+  &__select {
+    width: 100%;
+    padding: $spacing-sm;
+    border-radius: $border-radius-sm;
+    border: $border-width solid $color-gray;
+  }
+  
+  // Element: supplier-management__textarea
+  &__textarea {
+    width: 100%;
+    padding: $spacing-sm;
+    border-radius: $border-radius-sm;
+    border: $border-width solid $color-gray;
+    min-height: 80px;
+    resize: vertical;
+  }
+  
+  // Button elements
+  &__edit-button,
+  &__save-button,
+  &__cancel-button,
+  &__retry-button {
+    padding: $spacing-sm $spacing-md;
+    border-radius: $border-radius-sm;
+    border: none;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    margin-right: $spacing-sm;
+    transition: all 0.2s ease;
+  }
+  
+  // Element: supplier-management__edit-button
+  &__edit-button {
+    background-color: $color-primary-light;
+    color: $color-primary-dark;
+    
+    &:hover {
+      background-color: darken($color-primary-light, 5%);
+    }
+  }
+  
+  // Element: supplier-management__save-button
+  &__save-button {
+    background-color: $color-success;
+    color: $color-white;
+    
+    &:hover {
+      background-color: darken($color-success, 5%);
+    }
+    
+    &:disabled {
+      background-color: $color-gray;
+      cursor: not-allowed;
+    }
+  }
+  
+  // Element: supplier-management__cancel-button
+  &__cancel-button {
+    background-color: $color-gray-light;
+    color: $color-gray-dark;
+    
+    &:hover {
+      background-color: darken($color-gray-light, 5%);
+    }
+  }
+  
+  // State elements - loading, error, empty
+  &__loading,
+  &__error,
+  &__empty {
+    text-align: center;
+    padding: $spacing-xxl;
+    background-color: $color-gray-lighter;
+    border-radius: $border-radius-sm;
+    margin: $spacing-md 0;
+  }
+  
+  // Element: supplier-management__error
+  &__error {
+    color: $color-danger;
+  }
+  
+  // Element: supplier-management__info-text
+  &__info-text {
+    line-height: $line-height-normal;
+    padding: $spacing-xs 0;
+  }
+  
+  // Element: supplier-management__message with modifiers
+  &__message {
+    margin-top: $spacing-xl;
+    padding: $spacing-md;
+    border-radius: $border-radius-sm;
+    text-align: center;
+    
+    // Modifier: supplier-management__message--success
+    &--success {
+      background-color: lighten($color-success, 45%);
+      color: darken($color-success, 20%);
+      border: $border-width solid lighten($color-success, 35%);
+    }
+    
+    // Modifier: supplier-management__message--error
+    &--error {
+      background-color: lighten($color-danger, 45%);
+      color: darken($color-danger, 10%);
+      border: $border-width solid lighten($color-danger, 35%);
+    }
+  }
+}
