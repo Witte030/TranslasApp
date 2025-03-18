@@ -685,7 +685,7 @@
   z-index: 1;
 }
 .create-card__add-button:hover {
-  background-color: #1c7330;
+  background-color: #1f8135;
   transform: translateY(-2px);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
@@ -743,14 +743,14 @@
   text-align: center;
 }
 .create-card__message--success {
-  background-color: #c4f1ce;
-  color: #145523;
-  border: 1px solid #9be7ac;
+  background-color: #79df90;
+  color: #208637;
+  border: 1px solid #60d97c;
 }
 .create-card__message--error {
-  background-color: #fef9f9;
-  color: #bd2130;
-  border: 1px solid #f6cdd1;
+  background-color: #ec9099;
+  color: #d12435;
+  border: 1px solid #e87c86;
 }
 
 .home {

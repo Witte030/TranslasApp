@@ -78,6 +78,30 @@
         "invalidPallets": "Aantal pallets moet een geldig getal zijn",
         "invalidBundels": "Aantal bundels moet een geldig getal zijn"
       }
+    },
+    "receiver": {
+      "title": "Nieuwe Ontvanger Toevoegen",
+      "name": "Naam Ontvanger",
+      "add": "Ontvanger Toevoegen",
+      "adding": "Toevoegen...",
+      "success": "Ontvanger succesvol toegevoegd!",
+      "error": "Fout bij toevoegen ontvanger: "
+    },
+    "supplier": {
+      "title": "Nieuwe Leverancier Toevoegen",
+      "name": "Naam Leverancier",
+      "add": "Leverancier Toevoegen",
+      "adding": "Toevoegen...",
+      "success": "Leverancier succesvol toegevoegd!",
+      "error": "Fout bij toevoegen leverancier: "
+    },
+    "carrier": {
+      "title": "Nieuwe Vervoerder Toevoegen",
+      "name": "Naam Vervoerder",
+      "add": "Vervoerder Toevoegen",
+      "adding": "Toevoegen...",
+      "success": "Vervoerder succesvol toegevoegd!",
+      "error": "Fout bij toevoegen vervoerder: "
     }
   },
   "common": {

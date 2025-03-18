@@ -156,13 +156,13 @@
     }
   }
   
- // Element: create-card__add-button
+// Element: create-card__add-button
 &__add-button {
   width: 36px;
   height: 36px;
   border-radius: $border-radius-sm;
   border: none;
-  background-color: $color-success-dark;  // Changed to success-dark
+  background-color: $color-success-dark;
   color: white;
   font-size: 18px;
   font-weight: $font-weight-bold;
@@ -173,12 +173,12 @@
   transition: all 0.2s ease;
   flex-shrink: 0;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  margin-left: $spacing-sm;  // Add margin to prevent overlap
-  position: relative;  // Add position relative
-  z-index: 1;  // Add z-index to ensure it's above other elements
+  margin-left: $spacing-sm;
+  position: relative;
+  z-index: 1;
   
   &:hover {
-    background-color: darken($color-success-dark, 5%);  // Slightly darken on hover
+    background-color: color.scale($color-success-dark, $lightness: -5%); // Changed from darken()
     transform: translateY(-2px);
     box-shadow: $shadow-sm;
   }
@@ -190,7 +190,7 @@
   
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba($color-success-dark, 0.3);  // Match focus to button color
+    box-shadow: 0 0 0 3px rgba($color-success-dark, 0.3);
   }
 }
   
@@ -241,24 +241,24 @@
   }
   
   // Element: create-card__message
-  &__message {
-    margin-top: $spacing-lg;
-    padding: $spacing-md;
-    border-radius: $border-radius-sm;
-    text-align: center;
-    
-    // Modifier: create-card__message--success
-    &--success {
-      background-color: lighten($color-success, 45%);
-      color: darken($color-success, 20%);
-      border: 1px solid lighten($color-success, 35%);
-    }
-    
-    // Modifier: create-card__message--error
-    &--error {
-      background-color: lighten($color-danger, 45%);
-      color: darken($color-danger, 10%);
-      border: 1px solid lighten($color-danger, 35%);
-    }
+&__message {
+  margin-top: $spacing-lg;
+  padding: $spacing-md;
+  border-radius: $border-radius-sm;
+  text-align: center;
+  
+  // Modifier: create-card__message--success
+  &--success {
+    background-color: color.scale($color-success, $lightness: 45%);
+    color: color.scale($color-success, $lightness: -20%);
+    border: 1px solid color.scale($color-success, $lightness: 35%);
   }
+  
+  // Modifier: create-card__message--error
+  &--error {
+    background-color: color.scale($color-danger, $lightness: 45%);
+    color: color.scale($color-danger, $lightness: -10%);
+    border: 1px solid color.scale($color-danger, $lightness: 35%);
+  }
+}
 }

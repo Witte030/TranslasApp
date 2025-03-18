@@ -54,7 +54,7 @@
         "failedUpdate": "Failed to update status: "
       }
     },
-   "forms": {
+  "forms": {
   "create": {
     "title": "Create New Card",
     "entitySelection": "Select Entities",
@@ -78,6 +78,30 @@
       "invalidPallets": "Number of pallets must be a valid number",
       "invalidBundels": "Number of bundels must be a valid number"
     }
+  },
+  "receiver": {
+    "title": "Add New Receiver",
+    "name": "Receiver Name",
+    "add": "Add Receiver",
+    "adding": "Adding...",
+    "success": "Receiver added successfully!",
+    "error": "Error adding receiver: "
+  },
+  "supplier": {
+    "title": "Add New Supplier",
+    "name": "Supplier Name",
+    "add": "Add Supplier",
+    "adding": "Adding...",
+    "success": "Supplier added successfully!",
+    "error": "Error adding supplier: "
+  },
+  "carrier": {
+    "title": "Add New Carrier",
+    "name": "Carrier Name",
+    "add": "Add Carrier",
+    "adding": "Adding...",
+    "success": "Carrier added successfully!",
+    "error": "Error adding carrier: "
   }
 },
     "common": {
