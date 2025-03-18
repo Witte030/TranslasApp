@@ -5,19 +5,124 @@
 .supplier-management {
   max-width: $breakpoint-xl;
   margin: 0 auto;
-  padding: $spacing-xxl $spacing-xl;
+  padding: $spacing-lg $spacing-md;
+  
+  @media (min-width: $breakpoint-sm) {
+    padding: $spacing-xl $spacing-lg;
+  }
+  
+  @media (min-width: $breakpoint-md) {
+    padding: $spacing-xxl $spacing-xl;
+  }
   
   // Element: supplier-management__title
   &__title {
-    font-size: $font-size-xxxl;
-    margin-bottom: $spacing-xxl;
+    font-size: $font-size-xxl;
+    margin-bottom: $spacing-xl;
     color: $color-primary;
     text-align: center;
+    
+    @media (min-width: $breakpoint-md) {
+      font-size: $font-size-xxxl;
+      margin-bottom: $spacing-xxl;
+    }
+  }
+  
+  // Search functionality
+  // Element: supplier-management__search-container
+  &__search-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: $spacing-md;
+    margin-bottom: $spacing-xl;
+    max-width: 600px;
+    align-items: center;
+    
+    @media (max-width: $breakpoint-sm) {
+      grid-template-columns: 1fr; // Stack on mobile
+      gap: $spacing-sm;
+    }
+  }
+  
+  // Element: supplier-management__search
+  &__search {
+    min-width: 0; // Allow content to shrink below its natural size
+    
+    .fuzzy-search {
+      width: 100%;
+      
+      &__container {
+        width: 100%;
+      }
+      
+      &__input {
+        width: 100%;
+      }
+    }
+  }
+  
+  // Element: supplier-management__clear-search
+  &__clear-search {
+    background-color: $color-gray-light;
+    border: none;
+    border-radius: $border-radius-sm;
+    padding: $spacing-sm $spacing-md;
+    cursor: pointer;
+    font-size: $font-size-sm;
+    transition: background-color 0.2s, transform 0.1s;
+    font-weight: $font-weight-medium;
+    white-space: nowrap;
+    min-height: 38px; // Match input height
+    
+    @media (max-width: $breakpoint-sm) {
+      width: fit-content;
+      justify-self: flex-end; // Align to right on mobile
+    }
+    
+    &:hover {
+      background-color: darken($color-gray-light, 5%);
+    }
+    
+    &:active {
+      transform: translateY(1px);
+    }
   }
   
   // Element: supplier-management__list-container
   &__list-container {
     margin-bottom: $spacing-xxl;
+  }
+  
+  // State elements - loading, error, empty
+  &__loading,
+  &__error,
+  &__empty {
+    text-align: center;
+    padding: $spacing-xl;
+    background-color: $color-gray-lighter;
+    border-radius: $border-radius-sm;
+    margin: $spacing-md 0;
+  }
+  
+  // Element: supplier-management__error
+  &__error {
+    color: $color-danger;
+  }
+  
+  // Element: supplier-management__retry-button
+  &__retry-button {
+    margin-top: $spacing-md;
+    padding: $spacing-sm $spacing-md;
+    background-color: $color-primary;
+    color: $color-white;
+    border: none;
+    border-radius: $border-radius-sm;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    
+    &:hover {
+      background-color: darken($color-primary, 10%);
+    }
   }
   
   // Element: supplier-management__table
@@ -27,14 +132,28 @@
     margin-top: $spacing-lg;
     
     th, td {
-      padding: $spacing-lg;
+      padding: $spacing-md;
       text-align: left;
-      border-bottom: $border-width solid $color-gray-light;
+      border-bottom: 1px solid $color-gray-light;
+      
+      @media (min-width: $breakpoint-md) {
+        padding: $spacing-lg;
+      }
     }
     
     th {
       background-color: $color-gray-lighter;
       font-weight: $font-weight-bold;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    
+    // Make table responsive
+    @media (max-width: $breakpoint-md) {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
     }
   }
   
@@ -76,7 +195,7 @@
     width: 100%;
     padding: $spacing-sm;
     border-radius: $border-radius-sm;
-    border: $border-width solid $color-gray;
+    border: 1px solid $color-gray;
   }
   
   // Element: supplier-management__textarea
@@ -84,16 +203,27 @@
     width: 100%;
     padding: $spacing-sm;
     border-radius: $border-radius-sm;
-    border: $border-width solid $color-gray;
+    border: 1px solid $color-gray;
     min-height: 80px;
     resize: vertical;
+  }
+  
+  // Element: supplier-management__info-text
+  &__info-text {
+    line-height: $line-height-normal;
+    padding: $spacing-xs 0;
+    
+    &:empty::before {
+      content: attr(data-empty-text);
+      color: $color-gray;
+      font-style: italic;
+    }
   }
   
   // Button elements
   &__edit-button,
   &__save-button,
-  &__cancel-button,
-  &__retry-button {
+  &__cancel-button {
     padding: $spacing-sm $spacing-md;
     border-radius: $border-radius-sm;
     border: none;
@@ -118,7 +248,7 @@
     background-color: $color-success;
     color: $color-white;
     
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: darken($color-success, 5%);
     }
     
@@ -138,47 +268,55 @@
     }
   }
   
-  // State elements - loading, error, empty
-  &__loading,
-  &__error,
-  &__empty {
-    text-align: center;
-    padding: $spacing-xxl;
-    background-color: $color-gray-lighter;
-    border-radius: $border-radius-sm;
-    margin: $spacing-md 0;
-  }
-  
-  // Element: supplier-management__error
-  &__error {
-    color: $color-danger;
-  }
-  
-  // Element: supplier-management__info-text
-  &__info-text {
-    line-height: $line-height-normal;
-    padding: $spacing-xs 0;
-  }
-  
   // Element: supplier-management__message with modifiers
   &__message {
     margin-top: $spacing-xl;
     padding: $spacing-md;
     border-radius: $border-radius-sm;
     text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
     
     // Modifier: supplier-management__message--success
     &--success {
       background-color: lighten($color-success, 45%);
       color: darken($color-success, 20%);
-      border: $border-width solid lighten($color-success, 35%);
+      border: 1px solid lighten($color-success, 35%);
     }
     
     // Modifier: supplier-management__message--error
     &--error {
       background-color: lighten($color-danger, 45%);
       color: darken($color-danger, 10%);
-      border: $border-width solid lighten($color-danger, 35%);
+      border: 1px solid lighten($color-danger, 35%);
     }
+  }
+}
+
+// Animation for message appearance
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Fix for fuzzy search specificity issues when inside supplier management
+.supplier-management .fuzzy-search {
+  &__container {
+    width: 100%;
+  }
+  
+  &__input {
+    width: 100%;
+  }
+  
+  &__dropdown {
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
   }
 }
