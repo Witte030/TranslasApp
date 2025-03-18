@@ -1,39 +1,40 @@
 //==================================
 // COLOR SYSTEM
 //==================================
-
+@use 'sass:color';
 // Brand Colors
 $color-primary: #007bff;
-$color-primary-light: lighten($color-primary, 15%);
-$color-primary-dark: #0069d9;
+$color-primary-dark: color.scale($color-primary, $lightness: -20%);
+$color-primary-light: color.scale($color-primary, $lightness: 40%);
 
 $color-secondary: #6c757d;
-$color-secondary-light: lighten($color-secondary, 15%);
-$color-secondary-dark: darken($color-secondary, 10%);
+$color-secondary-dark: color.scale($color-secondary, $lightness: -20%);
+$color-secondary-light: color.scale($color-secondary, $lightness: 40%);
 
 // State Colors
 $color-success: #28a745;
-$color-success-light: lighten($color-success, 40%);
-$color-success-dark: #218838;
+$color-success-dark: color.scale($color-success, $lightness: -20%);
+$color-success-light: color.scale($color-success, $lightness: 40%);
 
 $color-info: #17a2b8;
-$color-info-light: lighten($color-info, 40%);
-$color-info-dark: #138496;
+$color-info-light: color.scale($color-info, $lightness: -20%);
+$color-info-dark: color.scale($color-info, $lightness: 40%);
 
 $color-warning: #ffc107;
-$color-warning-light: lighten($color-warning, 35%);
-$color-warning-dark: darken($color-warning, 10%);
+$color-warning-dark: color.scale($color-warning, $lightness: -20%);
+$color-warning-light: color.scale($color-warning, $lightness: 40%);
 
 $color-danger: #dc3545;
-$color-danger-light: lighten($color-danger, 40%);
-$color-danger-dark: darken($color-danger, 10%);
+$color-danger-dark: color.scale($color-danger, $lightness: -20%);
+$color-danger-light: color.scale($color-danger, $lightness: 40%);
 
 // Gray Scale
 $color-white: #ffffff;
-$color-gray-lighter: #f8f9fa; // This was missing
-$color-gray-light: #dee2e6;   // Your existing value was different
-$color-gray: #6c757d;
-$color-gray-dark: #343a40;
+$color-gray-lighter: #f8f9fa;
+$color-gray-light: #e9ecef;
+$color-gray: #ced4da;
+$color-gray-dark: #495057;
+$color-gray-darker: #343a40;
 $color-black: #000000;
 
 // UI Colors
